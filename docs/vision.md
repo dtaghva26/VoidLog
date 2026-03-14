@@ -1,6 +1,37 @@
 # Product Vision Document
 ## Voidlog
 
+#- [Product Vision Document](#product-vision-document)
+- [Product Vision Document](#product-vision-document)
+  - [Voidlog](#voidlog)
+- [1. Product Overview](#1-product-overview)
+- [2. Vision Statement](#2-vision-statement)
+- [3. Problem Statement](#3-problem-statement)
+- [4. Target Users](#4-target-users)
+  - [Primary Users](#primary-users)
+    - [Gamers](#gamers)
+    - [Developers](#developers)
+  - [User Characteristics](#user-characteristics)
+- [5. Value Proposition](#5-value-proposition)
+    - [Personal Reflection](#personal-reflection)
+    - [Emotional Tracking](#emotional-tracking)
+    - [Digital Life Timeline](#digital-life-timeline)
+    - [Light Gamification](#light-gamification)
+- [6. Product Principles](#6-product-principles)
+  - [Privacy First](#privacy-first)
+  - [Minimalism](#minimalism)
+  - [Reflection Over Productivity](#reflection-over-productivity)
+  - [Community Culture](#community-culture)
+  - [Consistency Through Gamification](#consistency-through-gamification)
+- [7. Core Capabilities](#7-core-capabilities)
+- [8. Success Metrics](#8-success-metrics)
+    - [User Engagement](#user-engagement)
+    - [Habit Formation](#habit-formation)
+    - [Retention](#retention)
+    - [Product Satisfaction](#product-satisfaction)
+- [9. Long-Term Vision](#9-long-term-vision)
+- [10. Summary](#10-summary)
+
 ---
 
 # 1. Product Overview
