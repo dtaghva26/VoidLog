@@ -66,9 +66,13 @@ export const BLOCK_DEFS = [
   { id:"sleep",    cat:"effects", color:"#6366f1", label:"😴 Sleep",          icon:"😴", hasInput:false },
   { id:"sparkle",  cat:"effects", color:"#a855f7", label:"✨ Sparkle",        icon:"✨", hasInput:false },
   { id:"sound",    cat:"effects", color:"#be185d", label:"🎵 Play Sound",     icon:"🎵", hasInput:"select", options:["pop","boing","cheer","woosh"] },
+  { id:"wallpaint",cat:"home",    color:"#0ea5e9", label:"🖌 Paint Walls",    icon:"🖌", hasInput:"colour" },
+  { id:"floorpaint",cat:"home",   color:"#0284c7", label:"🪵 Paint Floor",    icon:"🪵", hasInput:"colour" },
+  { id:"wallpaper",cat:"home",    color:"#0369a1", label:"🧱 Wallpaper",      icon:"🧱", hasInput:"select", options:["none","stars","hearts","dots"] },
+  { id:"settoy",   cat:"home",    color:"#0891b2", label:"🧸 Place Toy",      icon:"🧸", hasInput:"select", options:["none","ball","book","plant"] },
   { id:"speed",    cat:"control", color:"#f97316", label:"⚡ Set Speed",      icon:"⚡", hasInput:"select", options:["slow","normal","fast"] },
   { id:"repeat",   cat:"control", color:"#ea580c", label:"🔄 Repeat",         icon:"🔄", hasInput:"number", placeholder:"3" },
   { id:"wait",     cat:"control", color:"#ef4444", label:"⏱ Wait",           icon:"⏱", hasInput:"number", placeholder:"1" },
 ];
-export const CAT_LABELS = { event:"Events", looks:"Looks", motion:"Motion", effects:"Effects", control:"Control" };
-export const CAT_COLORS = { event:"#f59e0b", looks:"#8b5cf6", motion:"#10b981", effects:"#ec4899", control:"#f97316" };
+export const CAT_LABELS = { event:"Events", looks:"Looks", motion:"Motion", effects:"Effects", home:"Home", control:"Control" };
+export const CAT_COLORS = { event:"#f59e0b", looks:"#8b5cf6", motion:"#10b981", effects:"#ec4899", home:"#0284c7", control:"#f97316" };
