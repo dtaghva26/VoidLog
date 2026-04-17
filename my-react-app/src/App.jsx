@@ -83,6 +83,8 @@ function ScratchBlock({ def, value, onChange, onRemove, index, active, isYounger
   const size = isYoungerMode
     ? { icon:22, label:15, input:14, inputWidth:98, numberWidth:58, pad:"12px 14px", remove:20 }
     : { icon:16, label:12, input:11, inputWidth:72, numberWidth:40, pad:"8px 12px", remove:15 };
+  const iconText = isYoungerMode ? (def.youngerIcons || def.icon) : def.icon;
+  const labelText = isYoungerMode ? (def.youngerLabel || def.label) : def.label;
   return (
     <div
       draggable
@@ -94,8 +96,8 @@ function ScratchBlock({ def, value, onChange, onRemove, index, active, isYounger
         marginBottom:6, transition:"box-shadow 0.15s"
       }}
     >
-      <span style={{ fontSize:size.icon, flexShrink:0 }}>{def.icon}</span>
-      <span style={{ color: active ? def.color : "white", fontWeight:700, fontSize:size.label, flex:1 }}>{def.label}</span>
+      <span style={{ fontSize:size.icon, flexShrink:0 }}>{iconText}</span>
+      <span style={{ color: active ? def.color : "white", fontWeight:700, fontSize:size.label, flex:1 }}>{labelText}</span>
       {def.hasInput === "colour" && (
         <input type="color" value={value||"#a78bfa"} onChange={e=>onChange(e.target.value)}
           style={{ width:isYoungerMode ? 30 : 24, height:isYoungerMode ? 30 : 24, border:"none", borderRadius:6, cursor:"pointer", padding:0 }}/>
@@ -120,11 +122,13 @@ function ScratchBlock({ def, value, onChange, onRemove, index, active, isYounger
 }
 
 function PaletteBlock({ def, onAdd, isYoungerMode }) {
+  const iconText = isYoungerMode ? (def.youngerIcons || def.icon) : def.icon;
+  const labelText = isYoungerMode ? (def.youngerLabel || def.label) : def.label;
   return (
     <div onClick={()=>onAdd(def)} draggable onDragStart={e=>e.dataTransfer.setData("palette-id",def.id)}
       style={{ display:"flex", alignItems:"center", gap:isYoungerMode ? 9 : 6, background:def.color, borderRadius:9, padding:isYoungerMode ? "10px 12px" : "6px 10px", cursor:"pointer", userSelect:"none", boxShadow:"0 2px 0 rgba(0,0,0,0.18)", marginBottom:4 }}>
-      <span style={{ fontSize:isYoungerMode ? 20 : 14 }}>{def.icon}</span>
-      <span style={{ color:"white", fontWeight:700, fontSize:isYoungerMode ? 14 : 11 }}>{def.label}</span>
+      <span style={{ fontSize:isYoungerMode ? 20 : 14 }}>{iconText}</span>
+      <span style={{ color:"white", fontWeight:700, fontSize:isYoungerMode ? 14 : 11 }}>{labelText}</span>
     </div>
   );
 }
@@ -308,6 +312,39 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
       setAnim(s => ({ ...s, x:s.x + 40 })); await sleepMs(dur);
     } else if (id === "centre") {
       setAnim(s => ({ ...s, x:0, y:0 })); await sleepMs(dur);
+    } else if (id === "dash") {
+      setAnim(s => ({ ...s, x:s.x + 80 })); await sleepMs(dur*0.6);
+      setAnim(s => ({ ...s, x:s.x - 80 })); await sleepMs(dur*0.6);
+      setAnim(s => ({ ...s, x:0 }));
+    } else if (id === "hop") {
+      for (let j=0; j<3; j++) {
+        setAnim(s => ({ ...s, y:-30 })); await sleepMs(dur*0.55);
+        setAnim(s => ({ ...s, y:0 })); await sleepMs(dur*0.55);
+      }
+    } else if (id === "moonwalk") {
+      for (let j=0; j<4; j++) {
+        setAnim(s => ({ ...s, x:s.x - 22, spin:-6 })); await sleepMs(dur*0.6);
+        setAnim(s => ({ ...s, x:s.x - 44, spin:6 })); await sleepMs(dur*0.6);
+      }
+      setAnim(s => ({ ...s, spin:0 }));
+    } else if (id === "zigzag") {
+      for (let j=0; j<5; j++) {
+        setAnim(s => ({ ...s, x:s.x + 24, y:-12 })); await sleepMs(dur*0.5);
+        setAnim(s => ({ ...s, x:s.x - 24, y:12 })); await sleepMs(dur*0.5);
+      }
+      setAnim(s => ({ ...s, y:0 }));
+    } else if (id === "backflip") {
+      setAnim(s => ({ ...s, y:-36, spin:-720, scale:1.1 })); await sleepMs(dur*2);
+      setAnim(s => ({ ...s, y:0, spin:0, scale:1 }));
+    } else if (id === "slide") {
+      setAnim(s => ({ ...s, x:s.x + 60, y:8 })); await sleepMs(dur);
+      setAnim(s => ({ ...s, y:0 })); await sleepMs(dur*0.5);
+    } else if (id === "float") {
+      for (let j=0; j<3; j++) {
+        setAnim(s => ({ ...s, y:-34, scale:1.08 })); await sleepMs(dur);
+        setAnim(s => ({ ...s, y:-10, scale:1.04 })); await sleepMs(dur);
+      }
+      setAnim(s => ({ ...s, y:0, scale:1 }));
     } else if (id === "celebrate") {
       setAnim(s => ({ ...s, confetti:true, scale:1.2 }));
       playSound("cheer"); await sleepMs(slow?1800:fast?600:1100);
