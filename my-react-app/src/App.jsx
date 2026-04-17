@@ -14,6 +14,7 @@ import {
   STAGES,
   getStage,
   BLOCK_DEFS,
+  YOUNGER_BLOCK_IDS,
   CAT_LABELS,
   CAT_COLORS,
 } from "./constants.js";
@@ -78,49 +79,52 @@ function playSound(type) {
 }
 
 // ── SCRATCH BLOCK ──────────────────────────────────────────────────
-function ScratchBlock({ def, value, onChange, onRemove, index, active }) {
+function ScratchBlock({ def, value, onChange, onRemove, index, active, isYoungerMode }) {
+  const size = isYoungerMode
+    ? { icon:22, label:15, input:14, inputWidth:98, numberWidth:58, pad:"12px 14px", remove:20 }
+    : { icon:16, label:12, input:11, inputWidth:72, numberWidth:40, pad:"8px 12px", remove:15 };
   return (
     <div
       draggable
       onDragStart={e => e.dataTransfer.setData("seq-index", String(index))}
       style={{
         display:"flex", alignItems:"center", gap:8, background: active ? "#fff" : def.color,
-        borderRadius:12, padding:"8px 12px", cursor:"grab", userSelect:"none",
+        borderRadius:12, padding:size.pad, cursor:"grab", userSelect:"none",
         boxShadow: active ? `0 0 0 3px ${def.color}, 0 4px 12px rgba(0,0,0,0.3)` : "0 3px 0 rgba(0,0,0,0.2)",
         marginBottom:6, transition:"box-shadow 0.15s"
       }}
     >
-      <span style={{ fontSize:16, flexShrink:0 }}>{def.icon}</span>
-      <span style={{ color: active ? def.color : "white", fontWeight:700, fontSize:12, flex:1 }}>{def.label}</span>
+      <span style={{ fontSize:size.icon, flexShrink:0 }}>{def.icon}</span>
+      <span style={{ color: active ? def.color : "white", fontWeight:700, fontSize:size.label, flex:1 }}>{def.label}</span>
       {def.hasInput === "colour" && (
         <input type="color" value={value||"#a78bfa"} onChange={e=>onChange(e.target.value)}
-          style={{ width:24, height:24, border:"none", borderRadius:6, cursor:"pointer", padding:0 }}/>
+          style={{ width:isYoungerMode ? 30 : 24, height:isYoungerMode ? 30 : 24, border:"none", borderRadius:6, cursor:"pointer", padding:0 }}/>
       )}
       {def.hasInput === "text" && (
         <input value={value||""} onChange={e=>onChange(e.target.value)} placeholder={def.placeholder}
-          style={{ width:72, fontSize:11, borderRadius:6, border:"none", padding:"2px 6px", fontWeight:600 }}/>
+          style={{ width:size.inputWidth, fontSize:size.input, borderRadius:6, border:"none", padding:isYoungerMode ? "5px 8px" : "2px 6px", fontWeight:600 }}/>
       )}
       {def.hasInput === "number" && (
         <input type="number" value={value||2} min={1} max={20} onChange={e=>onChange(e.target.value)}
-          style={{ width:40, fontSize:12, borderRadius:6, border:"none", padding:"2px 6px", fontWeight:700, textAlign:"center" }}/>
+          style={{ width:size.numberWidth, fontSize:size.input, borderRadius:6, border:"none", padding:isYoungerMode ? "5px 8px" : "2px 6px", fontWeight:700, textAlign:"center" }}/>
       )}
       {def.hasInput === "select" && (
         <select value={value||def.options[0]} onChange={e=>onChange(e.target.value)}
-          style={{ fontSize:11, borderRadius:6, border:"none", padding:"2px 5px", fontWeight:600 }}>
+          style={{ fontSize:size.input, borderRadius:6, border:"none", padding:isYoungerMode ? "5px 8px" : "2px 5px", fontWeight:600 }}>
           {def.options.map(o=><option key={o}>{o}</option>)}
         </select>
       )}
-      <span onClick={onRemove} style={{ color:"rgba(255,255,255,0.8)", cursor:"pointer", fontSize:15, fontWeight:700, marginLeft:2 }}>×</span>
+      <span onClick={onRemove} style={{ color:"rgba(255,255,255,0.8)", cursor:"pointer", fontSize:size.remove, fontWeight:700, marginLeft:2 }}>×</span>
     </div>
   );
 }
 
-function PaletteBlock({ def, onAdd }) {
+function PaletteBlock({ def, onAdd, isYoungerMode }) {
   return (
     <div onClick={()=>onAdd(def)} draggable onDragStart={e=>e.dataTransfer.setData("palette-id",def.id)}
-      style={{ display:"flex", alignItems:"center", gap:6, background:def.color, borderRadius:9, padding:"6px 10px", cursor:"pointer", userSelect:"none", boxShadow:"0 2px 0 rgba(0,0,0,0.18)", marginBottom:4 }}>
-      <span style={{ fontSize:14 }}>{def.icon}</span>
-      <span style={{ color:"white", fontWeight:700, fontSize:11 }}>{def.label}</span>
+      style={{ display:"flex", alignItems:"center", gap:isYoungerMode ? 9 : 6, background:def.color, borderRadius:9, padding:isYoungerMode ? "10px 12px" : "6px 10px", cursor:"pointer", userSelect:"none", boxShadow:"0 2px 0 rgba(0,0,0,0.18)", marginBottom:4 }}>
+      <span style={{ fontSize:isYoungerMode ? 20 : 14 }}>{def.icon}</span>
+      <span style={{ color:"white", fontWeight:700, fontSize:isYoungerMode ? 14 : 11 }}>{def.label}</span>
     </div>
   );
 }
@@ -220,6 +224,7 @@ function LiveStage({ pet, anim, running }) {
 // ── PET STUDIO ─────────────────────────────────────────────────────
 function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
   const [studioTab, setStudioTab] = useState("studio");
+  const [kidMode, setKidMode] = useState("older");
   const [sequence, setSequence] = useState([]);
   const [values, setValues] = useState({});
   const [running, setRunning] = useState(false);
@@ -231,6 +236,17 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
   const availXP = totalXP - spentXP;
   const stageObj = getStage(pet.growth);
   const nextStage = STAGES.find(s => s.minGrowth > pet.growth);
+  const isYoungerMode = kidMode === "younger";
+  const paletteDefs = isYoungerMode
+    ? BLOCK_DEFS.filter(d => YOUNGER_BLOCK_IDS.includes(d.id))
+    : BLOCK_DEFS;
+  const availableCats = Object.entries(CAT_LABELS).filter(([k]) => paletteDefs.some(d => d.cat === k));
+
+  useEffect(() => {
+    if (!availableCats.some(([k]) => k === selCat)) {
+      setSelCat(availableCats[0]?.[0] || "event");
+    }
+  }, [selCat, availableCats]);
 
   const addToSeq = def => setSequence(s => [...s, { id:def.id, uid:Date.now()+Math.random() }]);
   const removeFromSeq = uid => setSequence(s => s.filter(x => x.uid !== uid));
@@ -377,7 +393,7 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
 
   const onDropSeq = e => {
     const pid = e.dataTransfer.getData("palette-id");
-    if (pid) { const def = BLOCK_DEFS.find(d=>d.id===pid); if(def) addToSeq(def); }
+    if (pid) { const def = paletteDefs.find(d=>d.id===pid); if(def) addToSeq(def); }
   };
 
   return (
@@ -387,42 +403,66 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
           <button key={t} onClick={()=>setStudioTab(t)} style={{ flex:1, padding:"10px 4px", border:"none", cursor:"pointer", fontWeight:700, fontSize:13, whiteSpace:"nowrap", minWidth:80, background:studioTab===t?"#fae8ff":"transparent", color:studioTab===t?"#86198f":"#c026d3", borderBottom:studioTab===t?"3px solid #c026d3":"none" }}>{l}</button>
         ))}
       </div>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:isYoungerMode ? "10px 12px" : "8px 12px", borderBottom:"1px solid #f5d0fe", background:"#fdf4ff" }}>
+        <p style={{ margin:0, color:"#a21caf", fontWeight:700, fontSize:isYoungerMode ? 14 : 12 }}>
+          Pet Studio Mode:
+        </p>
+        <div style={{ display:"flex", gap:6, background:"#f3e8ff", borderRadius:999, padding:3 }}>
+          {[["older","Older Kids"],["younger","Younger Kids (5-7)"]].map(([mode,label]) => (
+            <button key={mode} onClick={() => setKidMode(mode)}
+              style={{
+                border:"none",
+                cursor:"pointer",
+                borderRadius:999,
+                fontWeight:700,
+                fontSize:isYoungerMode ? 13 : 11,
+                padding:isYoungerMode ? "8px 12px" : "5px 10px",
+                background:kidMode===mode ? "#c026d3" : "transparent",
+                color:kidMode===mode ? "white" : "#86198f"
+              }}>
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* STUDIO — 3 column layout */}
       {studioTab === "studio" && (
         <div style={{ display:"flex", minHeight:420 }}>
 
           {/* Palette */}
-          <div style={{ width:152, flexShrink:0, background:"#1e1b4b", padding:8, overflowY:"auto" }}>
+          <div style={{ width:isYoungerMode ? 204 : 152, flexShrink:0, background:"#1e1b4b", padding:isYoungerMode ? 10 : 8, overflowY:"auto" }}>
             <div style={{ display:"flex", gap:3, flexWrap:"wrap", marginBottom:8 }}>
-              {Object.entries(CAT_LABELS).map(([k,v]) => (
-                <button key={k} onClick={()=>setSelCat(k)} style={{ fontSize:9, padding:"3px 6px", borderRadius:999, border:"none", cursor:"pointer", fontWeight:700, background:selCat===k?CAT_COLORS[k]:"#312e81", color:"white" }}>{v}</button>
+              {availableCats.map(([k,v]) => (
+                <button key={k} onClick={()=>setSelCat(k)} style={{ fontSize:isYoungerMode ? 12 : 9, padding:isYoungerMode ? "5px 9px" : "3px 6px", borderRadius:999, border:"none", cursor:"pointer", fontWeight:700, background:selCat===k?CAT_COLORS[k]:"#312e81", color:"white" }}>{v}</button>
               ))}
             </div>
-            {BLOCK_DEFS.filter(d=>d.cat===selCat).map(d => (
-              <PaletteBlock key={d.id} def={d} onAdd={addToSeq}/>
+            {paletteDefs.filter(d=>d.cat===selCat).map(d => (
+              <PaletteBlock key={d.id} def={d} onAdd={addToSeq} isYoungerMode={isYoungerMode}/>
             ))}
-            <p style={{ fontSize:9, color:"#4338ca", marginTop:8, textAlign:"center" }}>Tap or drag →</p>
+            <p style={{ fontSize:isYoungerMode ? 12 : 9, color:"#4338ca", marginTop:8, textAlign:"center" }}>
+              {isYoungerMode ? "Tap a block to add it 👇" : "Tap or drag →"}
+            </p>
           </div>
 
           {/* Script lane */}
-          <div style={{ width:200, flexShrink:0, background:"#0f172a", padding:10, overflowY:"auto", borderLeft:"1px solid #1e293b", borderRight:"1px solid #1e293b" }}
+          <div style={{ width:isYoungerMode ? 250 : 200, flexShrink:0, background:"#0f172a", padding:isYoungerMode ? 12 : 10, overflowY:"auto", borderLeft:"1px solid #1e293b", borderRight:"1px solid #1e293b" }}
             onDragOver={e=>e.preventDefault()} onDrop={onDropSeq}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
-              <span style={{ fontSize:11, color:"#94a3b8", fontWeight:700 }}>Script</span>
+              <span style={{ fontSize:isYoungerMode ? 14 : 11, color:"#94a3b8", fontWeight:700 }}>Script</span>
               <div style={{ display:"flex", gap:4 }}>
                 {!running ? (
-                  <button onClick={runSequence} disabled={sequence.length===0} style={{ padding:"4px 10px", borderRadius:7, border:"none", cursor:"pointer", fontWeight:800, fontSize:11, background:sequence.length===0?"#374151":"#22c55e", color:"white" }}>▶ Run</button>
+                  <button onClick={runSequence} disabled={sequence.length===0} style={{ padding:isYoungerMode ? "7px 12px" : "4px 10px", borderRadius:7, border:"none", cursor:"pointer", fontWeight:800, fontSize:isYoungerMode ? 14 : 11, background:sequence.length===0?"#374151":"#22c55e", color:"white" }}>▶ Run</button>
                 ) : (
-                  <button onClick={stopScript} style={{ padding:"4px 10px", borderRadius:7, border:"none", cursor:"pointer", fontWeight:800, fontSize:11, background:"#ef4444", color:"white" }}>■ Stop</button>
+                  <button onClick={stopScript} style={{ padding:isYoungerMode ? "7px 12px" : "4px 10px", borderRadius:7, border:"none", cursor:"pointer", fontWeight:800, fontSize:isYoungerMode ? 14 : 11, background:"#ef4444", color:"white" }}>■ Stop</button>
                 )}
-                <button onClick={clearSeq} style={{ padding:"4px 8px", borderRadius:7, border:"none", cursor:"pointer", fontSize:11, background:"#374151", color:"#94a3b8" }}>🗑</button>
+                <button onClick={clearSeq} style={{ padding:isYoungerMode ? "7px 11px" : "4px 8px", borderRadius:7, border:"none", cursor:"pointer", fontSize:isYoungerMode ? 14 : 11, background:"#374151", color:"#94a3b8" }}>🗑</button>
               </div>
             </div>
             {sequence.length === 0 ? (
               <div style={{ border:"2px dashed #334155", borderRadius:10, padding:"24px 10px", textAlign:"center" }}>
-                <p style={{ color:"#475569", fontSize:11, margin:0, fontWeight:600 }}>Drop blocks here!</p>
-                <p style={{ color:"#334155", fontSize:10, margin:"4px 0 0" }}>Start with ▶ When Start</p>
+                <p style={{ color:"#475569", fontSize:isYoungerMode ? 15 : 11, margin:0, fontWeight:600 }}>Drop blocks here!</p>
+                <p style={{ color:"#334155", fontSize:isYoungerMode ? 13 : 10, margin:"4px 0 0" }}>Start with ▶ When Start</p>
               </div>
             ) : sequence.map((block, idx) => {
               const def = BLOCK_DEFS.find(d=>d.id===block.id);
@@ -431,7 +471,8 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
                 <ScratchBlock key={block.uid} def={def} index={idx} active={activeIdx===idx}
                   value={values[block.uid]}
                   onChange={v=>setValues(prev=>({...prev,[block.uid]:v}))}
-                  onRemove={()=>removeFromSeq(block.uid)}/>
+                  onRemove={()=>removeFromSeq(block.uid)}
+                  isYoungerMode={isYoungerMode}/>
               );
             })}
           </div>
