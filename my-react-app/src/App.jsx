@@ -130,6 +130,9 @@ function LiveStage({ pet, anim, running }) {
   const rainbowColors = ["#f87171","#fb923c","#facc15","#4ade80","#60a5fa","#a78bfa","#f472b6"];
   const [rainbowIdx, setRainbowIdx] = useState(0);
   const rainbowRef = useRef(null);
+  const wallpaper = anim.wallpaper || "none";
+  const wallpaperEmoji = wallpaper === "stars" ? "⭐" : wallpaper === "hearts" ? "💖" : wallpaper === "dots" ? "⚪" : "";
+  const toyEmoji = anim.toy === "ball" ? "⚽" : anim.toy === "book" ? "📘" : anim.toy === "plant" ? "🪴" : "";
 
   useEffect(() => {
     if (anim.rainbow) {
@@ -148,14 +151,22 @@ function LiveStage({ pet, anim, running }) {
   const confettiPieces = ["🎊","🎉","⭐","🌟","✨","🎈"];
 
   return (
-    <div style={{ background:"#0f172a", borderRadius:12, padding:12, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:260, position:"relative", overflow:"hidden" }}>
+    <div style={{ background:anim.wallColor || "#0f172a", borderRadius:12, padding:12, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:260, position:"relative", overflow:"hidden", transition:"background 0.25s" }}>
       {/* Stars bg */}
       {["10%,15%","80%,10%","50%,5%","20%,70%","75%,60%","40%,80%","90%,40%"].map((pos,i) => (
         <div key={i} style={{ position:"absolute", left:pos.split(",")[0], top:pos.split(",")[1], width:2, height:2, background:"white", borderRadius:"50%", opacity:0.4 }}/>
       ))}
+      {wallpaper !== "none" && (
+        <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(5,1fr)", alignContent:"space-between", padding:"8px 12px 36px", opacity:0.28, pointerEvents:"none", color:"white", fontSize:14 }}>
+          {Array.from({ length:20 }).map((_, i) => (
+            <span key={i} style={{ textAlign:"center" }}>{wallpaperEmoji}</span>
+          ))}
+        </div>
+      )}
 
       {/* Ground */}
-      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:32, background:"#1e293b", borderTop:"2px solid #334155" }}/>
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:32, background:anim.floorColor || "#1e293b", borderTop:"2px solid #334155", transition:"background 0.25s" }}/>
+      {toyEmoji && <div style={{ position:"absolute", bottom:8, right:14, fontSize:18, zIndex:9 }}>{toyEmoji}</div>}
 
       {/* Confetti */}
       {anim.confetti && (
@@ -213,7 +224,7 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
   const [values, setValues] = useState({});
   const [running, setRunning] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
-  const [anim, setAnim] = useState({ x:0, y:0, spin:0, scale:1, bubble:"", think:"", confetti:false, zzz:false, sparkle:false, shine:false, ghost:false, rainbow:false, pulse:false, tint:undefined, petSize:"normal", speedMs:250 });
+  const [anim, setAnim] = useState({ x:0, y:0, spin:0, scale:1, bubble:"", think:"", confetti:false, zzz:false, sparkle:false, shine:false, ghost:false, rainbow:false, pulse:false, tint:undefined, petSize:"normal", speedMs:250, wallColor:"#0f172a", floorColor:"#1e293b", wallpaper:"none", toy:"none" });
   const [feedMsg, setFeedMsg] = useState(null);
   const [selCat, setSelCat] = useState("event");
   const stopRef = useRef(false);
@@ -294,6 +305,14 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
     } else if (id === "sound") {
       playSound(val || "pop");
       await sleepMs(300);
+    } else if (id === "wallpaint") {
+      setAnim(s => ({ ...s, wallColor:val || "#0f172a" }));
+    } else if (id === "floorpaint") {
+      setAnim(s => ({ ...s, floorColor:val || "#1e293b" }));
+    } else if (id === "wallpaper") {
+      setAnim(s => ({ ...s, wallpaper:val || "none" }));
+    } else if (id === "settoy") {
+      setAnim(s => ({ ...s, toy:val || "none" }));
     }
   };
 
@@ -422,7 +441,7 @@ function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
             <p style={{ margin:0, fontSize:11, color:"#475569", fontWeight:700, textAlign:"center" }}>🎬 Live Stage</p>
             <LiveStage pet={pet} anim={anim} running={running}/>
             <div style={{ display:"flex", gap:6, justifyContent:"center", flexWrap:"wrap" }}>
-              <button onClick={()=>setAnim(a=>({...a,tint:undefined,rainbow:false,ghost:false,shine:false,pulse:false,petSize:"normal",x:0,y:0,spin:0,scale:1,bubble:"",think:"",confetti:false,zzz:false,sparkle:false}))}
+              <button onClick={()=>setAnim(a=>({...a,tint:undefined,rainbow:false,ghost:false,shine:false,pulse:false,petSize:"normal",x:0,y:0,spin:0,scale:1,bubble:"",think:"",confetti:false,zzz:false,sparkle:false,wallColor:"#0f172a",floorColor:"#1e293b",wallpaper:"none",toy:"none"}))}
                 style={{ fontSize:10, padding:"4px 10px", borderRadius:999, border:"1px solid #334155", background:"transparent", color:"#94a3b8", cursor:"pointer", fontWeight:600 }}>Reset</button>
             </div>
           </div>
