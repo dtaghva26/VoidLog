@@ -74,5 +74,23 @@ export const BLOCK_DEFS = [
   { id:"repeat",   cat:"control", color:"#ea580c", label:"🔄 Repeat",         icon:"🔄", hasInput:"number", placeholder:"3" },
   { id:"wait",     cat:"control", color:"#ef4444", label:"⏱ Wait",           icon:"⏱", hasInput:"number", placeholder:"1" },
 ];
+export const YOUNGER_BLOCK_IDS = [
+  "start",
+  "say",
+  "think",
+  "dance",
+  "jump",
+  "spin",
+  "celebrate",
+  "sparkle",
+  "sleep",
+  "rainbow",
+  "size",
+  "sound",
+  "colour",
+  "wallpaper",
+  "settoy",
+  "centre",
+];
 export const CAT_LABELS = { event:"Events", looks:"Looks", motion:"Motion", effects:"Effects", home:"Home", control:"Control" };
 export const CAT_COLORS = { event:"#f59e0b", looks:"#8b5cf6", motion:"#10b981", effects:"#ec4899", home:"#0284c7", control:"#f97316" };
