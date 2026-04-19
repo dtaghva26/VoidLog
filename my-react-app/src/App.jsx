@@ -4,6 +4,8 @@ import PetStudio from "./PetStudio.jsx";
 import { EntryCard, EntryForm, WeeklyReflection, XPBar } from "./DevLogFeatures.jsx";
 
 export default function App() {
+  // --- Local UI state ---
+  // `view` controls whether we render the list or the entry form flows.
   const [view, setView] = useState("log");
   const [entries, setEntries] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -16,6 +18,7 @@ export default function App() {
   const [pet, setPet] = useState({ type: "dragon", name: "Sparky", growth: 0 });
   const [spentXP, setSpentXP] = useState(0);
 
+  // Hydrate persisted data once; we still render with defaults if storage is unavailable.
   useEffect(() => {
     (async () => {
       try {
@@ -27,6 +30,7 @@ export default function App() {
     })();
   }, []);
 
+  // Update local state first so the UI remains responsive, then persist best-effort.
   const saveEntries = async n => { setEntries(n); try { await window.storage.set("devgamelog_entries", JSON.stringify(n)); } catch { } };
   const savePet = async p => { setPet(p); try { await window.storage.set("devgamelog_pet", JSON.stringify(p)); } catch { } };
   const saveSpentXP = async x => { setSpentXP(x); try { await window.storage.set("devgamelog_spentxp", JSON.stringify(x)); } catch { } };
@@ -34,6 +38,7 @@ export default function App() {
   const updateEntry = u => { saveEntries(entries.map(e => e.id === u.id ? u : e)); setEditingEntry(null); setView("log"); };
   const deleteEntry = id => saveEntries(entries.filter(e => e.id !== id));
 
+  // Export sorts chronologically so the markdown reads like a timeline, not insertion order.
   const exportMarkdown = () => {
     if (!entries.length) return;
     const lines = ["# My Quest Log 📖\n", `Exported ${new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}\n`, "---\n"];
@@ -50,7 +55,9 @@ export default function App() {
     const a = document.createElement("a"); a.href = url; a.download = "my-quest-log.md"; a.click(); URL.revokeObjectURL(url);
   };
 
+  // `totalXP` is reused by pet progression and should always reflect the full log.
   const totalXP = calcXP(entries);
+  // Search is intentionally broad across title/body/tags for quick recall.
   const filtered = entries.filter(e => {
     if (filter !== "all" && e.type !== filter) return false;
     if (!search.trim()) return true;
@@ -58,8 +65,10 @@ export default function App() {
     return e.title.toLowerCase().includes(q) || e.reflections.some(r => r.toLowerCase().includes(q)) || e.tags.some(t => t.toLowerCase().includes(q));
   });
 
+  // Avoid rendering empty-state flashes before async hydration finishes.
   if (!loaded) return <div style={{ padding: 24, color: "#9ca3af", fontSize: 14 }}>Loading your quest log... ⚔️</div>;
 
+  // Keep create/edit in a dedicated branch to simplify list-view JSX below.
   if (view === "new" || view === "edit") {
     return (
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "20px 16px" }}>
@@ -89,6 +98,7 @@ export default function App() {
       {entries.length > 0 && <XPBar entries={entries} />}
       {showPet && <PetStudio pet={pet} setPet={savePet} spentXP={spentXP} setSpentXP={saveSpentXP} totalXP={totalXP} />}
 
+      {/* Badge unlock state is derived each render so new entries immediately reflect progress. */}
       {showBadges && (
         <div style={{ marginBottom: 16 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#6d28d9", marginBottom: 10 }}>🏅 Badges</p>
@@ -120,6 +130,7 @@ export default function App() {
         {search && <span style={{ fontSize: 12, color: "#9ca3af", alignSelf: "center", marginLeft: 4 }}>{filtered.length} found</span>}
       </div>
 
+      {/* Empty state distinguishes between "no data yet" and "filters removed all matches". */}
       {filtered.length === 0 ? (
         <div style={{ textAlign: "center", padding: "48px 16px", border: "2px dashed #e5e7eb", borderRadius: 16 }}>
           <p style={{ fontSize: 28, margin: "0 0 8px" }}>🗺️</p>
