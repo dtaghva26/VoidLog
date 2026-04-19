@@ -10,7 +10,7 @@ import {
   CAT_COLORS,
 } from "./constants.js";
 
-function getPetArt(type, stage) {
+function getPetArt(type, stage, isYoungerMode = false) {
   const stageSpecs = {
     Baby: { headY: 21, headW: 24, headH: 20, bodyW: 20, bodyH: 16, eyeY: 24, eyeGap: 8, eyeR: 2.2, mouthY: 30, pawY: 36, earScale: 0.86 },
     Kid: { headY: 18, headW: 28, headH: 22, bodyW: 24, bodyH: 18, eyeY: 22, eyeGap: 9, eyeR: 2.4, mouthY: 29, pawY: 37, earScale: 0.95 },
@@ -40,21 +40,34 @@ function getPetArt(type, stage) {
     bubble: (<><circle cx={cx - earOffset} cy={s.headY + 2} r={4.2 * s.earScale} fill={cfg.base} /><circle cx={cx + earOffset} cy={s.headY + 2} r={4.2 * s.earScale} fill={cfg.base} /><circle cx={cx - earOffset} cy={s.headY + 2} r={2.2 * s.earScale} fill={cfg.light} opacity={0.9} /><circle cx={cx + earOffset} cy={s.headY + 2} r={2.2 * s.earScale} fill={cfg.light} opacity={0.9} /></>),
   };
 
+  const cartoonyStroke = isYoungerMode ? 1.35 : 0.95;
+  const eyeBoost = isYoungerMode ? 1.3 : 1;
+  const headScale = isYoungerMode ? 1.12 : 1;
+  const bodyScaleX = isYoungerMode
+    ? ({ dragon: 0.92, dog: 1.05, cat: 0.86, frog: 1.12 }[type] || 1)
+    : 1;
+  const bodyScaleY = isYoungerMode
+    ? ({ dragon: 1.08, dog: 0.95, cat: 1.1, frog: 0.88 }[type] || 1)
+    : 1;
+  const headRy = s.headH * 0.43 * headScale;
+  const bodyW = s.bodyW * bodyScaleX;
+  const bodyH = s.bodyH * bodyScaleY;
+
   return (
-    <g stroke="#111827" strokeWidth={0.95} strokeLinejoin="round" strokeLinecap="round">
+    <g stroke="#111827" strokeWidth={cartoonyStroke} strokeLinejoin="round" strokeLinecap="round">
       <ellipse cx={cx} cy={s.pawY + 6} rx={s.bodyW * 0.72} ry={4} fill="#0f172a" opacity={0.2} stroke="none" />
       {earArt[cfg.ear]}
-      <ellipse cx={cx} cy={s.headY + 1} rx={s.headW * 0.45} ry={s.headH * 0.43} fill={cfg.base} />
-      <ellipse cx={cx} cy={s.headY + 2} rx={s.headW * 0.35} ry={s.headH * 0.29} fill={cfg.light} opacity={0.88} stroke="none" />
-      <rect x={cx - s.bodyW / 2} y={s.headY + 10} width={s.bodyW} height={s.bodyH} rx={s.bodyW * 0.36} fill={cfg.base} />
-      <rect x={cx - s.bodyW / 2 + 2} y={s.headY + 14} width={s.bodyW - 4} height={s.bodyH - 8} rx={6} fill={cfg.light} opacity={0.45} stroke="none" />
-      <rect x={cx - s.bodyW / 2 + 0.5} y={s.pawY - 1} width={legW} height={6} rx={2} fill={cfg.dark} />
-      <rect x={cx + s.bodyW / 2 - legW - 0.5} y={s.pawY - 1} width={legW} height={6} rx={2} fill={cfg.dark} />
+      <ellipse cx={cx} cy={s.headY + 1} rx={s.headW * 0.45 * headScale} ry={headRy} fill={cfg.base} />
+      <ellipse cx={cx} cy={s.headY + 2} rx={s.headW * 0.35 * headScale} ry={s.headH * 0.29 * headScale} fill={cfg.light} opacity={0.88} stroke="none" />
+      <rect x={cx - bodyW / 2} y={s.headY + 10} width={bodyW} height={bodyH} rx={bodyW * 0.42} fill={cfg.base} />
+      <rect x={cx - bodyW / 2 + 2} y={s.headY + 14} width={bodyW - 4} height={Math.max(6, bodyH - 8)} rx={6} fill={cfg.light} opacity={0.45} stroke="none" />
+      <rect x={cx - bodyW / 2 + 0.5} y={s.pawY - 1} width={legW} height={6} rx={2} fill={cfg.dark} />
+      <rect x={cx + bodyW / 2 - legW - 0.5} y={s.pawY - 1} width={legW} height={6} rx={2} fill={cfg.dark} />
 
-      <circle cx={eyeL} cy={s.eyeY} r={s.eyeR} fill={cfg.eye} />
-      <circle cx={eyeR} cy={s.eyeY} r={s.eyeR} fill={cfg.eye} />
-      <circle cx={eyeL - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR - 1.2)} fill="white" stroke="none" />
-      <circle cx={eyeR - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR - 1.2)} fill="white" stroke="none" />
+      <circle cx={eyeL} cy={s.eyeY} r={s.eyeR * eyeBoost} fill={cfg.eye} />
+      <circle cx={eyeR} cy={s.eyeY} r={s.eyeR * eyeBoost} fill={cfg.eye} />
+      <circle cx={eyeL - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill="white" stroke="none" />
+      <circle cx={eyeR - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill="white" stroke="none" />
       <path d={`M${cx - 2.4} ${s.mouthY} Q${cx} ${s.mouthY + 2.8} ${cx + 2.4} ${s.mouthY}`} fill="none" stroke={cfg.accent} strokeWidth={1.3} />
       <ellipse cx={cx} cy={s.mouthY - 1.5} rx={1.7} ry={1.25} fill={cfg.accent} stroke="none" />
 
@@ -63,19 +76,20 @@ function getPetArt(type, stage) {
       {cfg.hair === "stripe" && <><path d={`M${cx - 6} ${s.headY + 1} Q${cx - 4} ${s.headY + 6} ${cx - 1} ${s.headY + 3}`} fill="none" stroke={cfg.dark} strokeWidth={1.2} /><path d={`M${cx + 6} ${s.headY + 1} Q${cx + 4} ${s.headY + 6} ${cx + 1} ${s.headY + 3}`} fill="none" stroke={cfg.dark} strokeWidth={1.2} /></>}
       {cfg.hair === "spots" && <><circle cx={cx - 6} cy={s.headY + 3} r={1.3} fill={cfg.dark} stroke="none" /><circle cx={cx + 7} cy={s.headY + 1.5} r={1.1} fill={cfg.dark} stroke="none" /></>}
 
-      {cfg.extra === "wing" && <><path d={`M${cx - s.bodyW / 2 - 2} ${s.headY + 16} Q${cx - s.bodyW / 2 - 7} ${s.headY + 11} ${cx - s.bodyW / 2 - 5} ${s.headY + 22}`} fill={cfg.dark} opacity={0.65} /><path d={`M${cx + s.bodyW / 2 + 2} ${s.headY + 16} Q${cx + s.bodyW / 2 + 7} ${s.headY + 11} ${cx + s.bodyW / 2 + 5} ${s.headY + 22}`} fill={cfg.dark} opacity={0.65} /></>}
+      {cfg.extra === "wing" && <><path d={`M${cx - bodyW / 2 - 2} ${s.headY + 16} Q${cx - bodyW / 2 - 7} ${s.headY + 11} ${cx - bodyW / 2 - 5} ${s.headY + 22}`} fill={cfg.dark} opacity={0.65} /><path d={`M${cx + bodyW / 2 + 2} ${s.headY + 16} Q${cx + bodyW / 2 + 7} ${s.headY + 11} ${cx + bodyW / 2 + 5} ${s.headY + 22}`} fill={cfg.dark} opacity={0.65} /></>}
       {cfg.extra === "collar" && <rect x={cx - 7} y={s.headY + 11} width={14} height={2.5} rx={1.2} fill={cfg.accent} stroke="none" />}
-      {cfg.extra === "tail" && <path d={`M${cx + s.bodyW / 2 - 1} ${s.headY + 20} Q${cx + s.bodyW / 2 + 7} ${s.headY + 15} ${cx + s.bodyW / 2 + 3} ${s.headY + 10}`} fill="none" stroke={cfg.dark} strokeWidth={1.7} />}
+      {cfg.extra === "tail" && <path d={`M${cx + bodyW / 2 - 1} ${s.headY + 20} Q${cx + bodyW / 2 + 7} ${s.headY + 15} ${cx + bodyW / 2 + 3} ${s.headY + 10}`} fill="none" stroke={cfg.dark} strokeWidth={1.7} />}
       {cfg.extra === "cheeks" && <><ellipse cx={cx - 6.5} cy={s.mouthY - 0.5} rx={2.2} ry={1.2} fill={cfg.light} stroke="none" opacity={0.95} /><ellipse cx={cx + 6.5} cy={s.mouthY - 0.5} rx={2.2} ry={1.2} fill={cfg.light} stroke="none" opacity={0.95} /></>}
+      {isYoungerMode && <><circle cx={cx - 9} cy={s.mouthY - 2} r={1.2} fill="#fda4af" stroke="none" opacity={0.8} /><circle cx={cx + 9} cy={s.mouthY - 2} r={1.2} fill="#fda4af" stroke="none" opacity={0.8} /></>}
     </g>
   );
 }
 
-function PixelPet({ type, growth, size = 80, tint, petSize = "normal", opacity = 1, outline = false }) {
+function PixelPet({ type, growth, size = 80, tint, petSize = "normal", opacity = 1, outline = false, isYoungerMode = false }) {
   const stage = getStage(growth).name;
   const sz = { tiny: 0.5, normal: 1, big: 1.4, huge: 1.8 }[petSize] || 1;
   const filterStr = tint ? `hue-rotate(${tint}deg) saturate(1.5)` : undefined;
-  const art = getPetArt(type, stage);
+  const art = getPetArt(type, stage, isYoungerMode);
   return (
     <svg width={size * sz} height={size * sz} viewBox="0 0 52 52"
       style={{
@@ -109,7 +123,7 @@ function playSound(type) {
     else if (type === "boing") { osc.type = "sine"; osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4); gain.gain.setValueAtTime(0.4, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4); osc.start(); osc.stop(ctx.currentTime + 0.4); }
     else if (type === "cheer") { [600, 800, 1000, 1200].forEach((f, i) => { const o2 = ctx.createOscillator(); const g2 = ctx.createGain(); o2.connect(g2); g2.connect(ctx.destination); o2.frequency.value = f; g2.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.08); g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.1); o2.start(ctx.currentTime + i * 0.08); o2.stop(ctx.currentTime + i * 0.08 + 0.1); }); }
     else if (type === "woosh") { osc.type = "sawtooth"; osc.frequency.setValueAtTime(200, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25); osc.start(); osc.stop(ctx.currentTime + 0.25); }
-  } catch (e) { }
+  } catch { }
 }
 
 function ScratchBlock({ def, value, onChange, onRemove, index, active, isYoungerMode }) {
@@ -223,7 +237,7 @@ function LiveStage({ pet, anim, running }) {
         filter: anim.pulse ? "brightness(1.2) saturate(1.15)" : "drop-shadow(0 8px 12px rgba(15,23,42,0.45))"
       }}>
         <div style={{ position: "absolute", inset: "auto 50% -4px", transform: "translateX(-50%)", width: 70, height: 11, borderRadius: "50%", background: "radial-gradient(circle, rgba(15,23,42,0.35), transparent 70%)", zIndex: -1 }} />
-        <PixelPet type={pet.type} growth={pet.growth} size={90} tint={tintVal} petSize={anim.petSize} outline={anim.shine} />
+        <PixelPet type={pet.type} growth={pet.growth} size={90} tint={tintVal} petSize={anim.petSize} outline={anim.shine} isYoungerMode={anim.isYoungerMode} />
       </div>
       {running && <div style={{ position: "absolute", bottom: 6, right: 8, fontSize: 10, color: "#4ade80", fontWeight: 700 }}>● running</div>}
       <p style={{ position: "absolute", bottom: 6, left: 8, margin: 0, fontSize: 10, color: "#475569", fontWeight: 600 }}>{pet.name} · {getStage(pet.growth).name}</p>
@@ -242,6 +256,20 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
   const [feedMsg, setFeedMsg] = useState(null);
   const [selCat, setSelCat] = useState("event");
   const stopRef = useRef(false);
+  const nameIdeas = {
+    younger: {
+      dragon: ["Bubbles", "Noodle", "Sprinkles", "Wiggles"],
+      dog: ["Snickerdoodle", "Boop", "Pudding", "Waffles"],
+      cat: ["Mochi", "Tater Tot", "Peaches", "Muffin"],
+      frog: ["Jellybean", "Pickle", "Pogo", "Blinky"],
+    },
+    older: {
+      dragon: ["Ember", "Blaze", "Rift", "Nova"],
+      dog: ["Scout", "Ranger", "Dash", "Ace"],
+      cat: ["Luna", "Shadow", "Iris", "Sage"],
+      frog: ["Moss", "River", "Orbit", "Rune"],
+    },
+  };
   const availXP = totalXP - spentXP;
   const stageObj = getStage(pet.growth);
   const nextStage = STAGES.find(s => s.minGrowth > pet.growth);
@@ -502,7 +530,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
 
           <div style={{ flex: 1, background: "#0a0f1e", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
             <p style={{ margin: 0, fontSize: 11, color: "#475569", fontWeight: 700, textAlign: "center" }}>🎬 Live Stage</p>
-            <LiveStage pet={pet} anim={anim} running={running} />
+            <LiveStage pet={pet} anim={{ ...anim, isYoungerMode }} running={running} />
           </div>
         </div>
       )}
@@ -531,7 +559,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
             {PET_TYPES.map(p => (
               <button key={p.id} onClick={() => setPet({ ...pet, type: p.id })} style={{ padding: "12px 8px", borderRadius: 14, border: "2px solid", cursor: "pointer", borderColor: pet.type === p.id ? "#d946ef" : "#e5e7eb", background: pet.type === p.id ? "linear-gradient(180deg,#fdf4ff,#f5d0fe)" : "linear-gradient(180deg,#ffffff,#fafafa)", textAlign: "center", boxShadow: pet.type === p.id ? "0 10px 20px rgba(192,38,211,0.2)" : "0 4px 10px rgba(15,23,42,0.08)", transition: "all 0.2s" }}>
                 <div style={{ borderRadius: 12, padding: "6px 0 4px", background: "radial-gradient(circle at 50% 30%, rgba(255,255,255,0.9), rgba(248,250,252,0))" }}>
-                  <PixelPet type={p.id} growth={0} size={54} />
+                  <PixelPet type={p.id} growth={0} size={54} isYoungerMode={isYoungerMode} />
                 </div>
                 <p style={{ margin: "6px 0 0", fontWeight: 700, fontSize: 13, color: pet.type === p.id ? "#86198f" : "#374151" }}>{p.name}</p>
               </button>
@@ -539,6 +567,29 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
           </div>
           <input value={pet.name} onChange={e => setPet({ ...pet, name: e.target.value })} placeholder="Name your pet!" maxLength={16}
             style={{ width: "100%", boxSizing: "border-box", fontSize: 14, borderRadius: 10, border: "2px solid #e879f9", padding: "8px 12px", fontWeight: 600, color: "#86198f" }} />
+          <p style={{ fontSize: 12, color: "#a21caf", margin: "10px 0 6px", fontWeight: 700 }}>
+            {isYoungerMode ? "Cute & goofy name ideas:" : "Cool name ideas:"}
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {(nameIdeas[kidMode]?.[pet.type] || []).map(n => (
+              <button
+                key={n}
+                onClick={() => setPet({ ...pet, name: n })}
+                style={{
+                  border: "1px solid #e879f9",
+                  background: "#fdf4ff",
+                  color: "#86198f",
+                  borderRadius: 999,
+                  padding: "4px 10px",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  cursor: "pointer"
+                }}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
