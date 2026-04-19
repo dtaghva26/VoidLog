@@ -9,6 +9,19 @@ import {
   CAT_LABELS,
   CAT_COLORS,
 } from "./constants.js";
+import { color1, color2, color3, WEBSITE_COLORS } from "./colors.js";
+
+const STUDIO_COLORS = {
+  panel: WEBSITE_COLORS.surface,
+  panelBorder: WEBSITE_COLORS.border,
+  text: WEBSITE_COLORS.primaryText,
+  textMuted: WEBSITE_COLORS.mutedText,
+  textOnDark: WEBSITE_COLORS.onAccent,
+  darkSurface: color1,
+  accent: color2,
+  accentSoft: WEBSITE_COLORS.accentSoft,
+  glow: color3,
+};
 
 function getPetArt(type, stage, isYoungerMode = false) {
   const stageSpecs = {
@@ -18,10 +31,10 @@ function getPetArt(type, stage, isYoungerMode = false) {
     Legend: { headY: 12, headW: 36, headH: 27, bodyW: 31, bodyH: 22, eyeY: 18, eyeGap: 11, eyeR: 3.1, mouthY: 27, pawY: 39, earScale: 1.16 },
   };
   const species = {
-    dragon: { base: "#462C7D", dark: "#462C7D", light: "#FF70BF", accent: "#FF70BF", eye: "#462C7D", ear: "horn", hair: "crest", extra: "wing" },
-    dog: { base: "#FF70BF", dark: "#D552A3", light: "#FF70BF", accent: "#D552A3", eye: "#462C7D", ear: "flop", hair: "tuft", extra: "collar" },
-    cat: { base: "#FF70BF", dark: "#D552A3", light: "#FF70BF", accent: "#FF70BF", eye: "#D552A3", ear: "pointy", hair: "stripe", extra: "tail" },
-    frog: { base: "#462C7D", dark: "#462C7D", light: "#FF70BF", accent: "#D552A3", eye: "#462C7D", ear: "bubble", hair: "spots", extra: "cheeks" },
+    dragon: { base: color1, dark: color1, light: color3, accent: color2, eye: color1, ear: "horn", hair: "crest", extra: "wing" },
+    dog: { base: color3, dark: color2, light: color3, accent: color2, eye: color1, ear: "flop", hair: "tuft", extra: "collar" },
+    cat: { base: color3, dark: color2, light: color3, accent: color2, eye: color1, ear: "pointy", hair: "stripe", extra: "tail" },
+    frog: { base: color1, dark: color1, light: color3, accent: color2, eye: color1, ear: "bubble", hair: "spots", extra: "cheeks" },
   };
 
   const cfg = species[type] || species.dragon;
@@ -54,8 +67,8 @@ function getPetArt(type, stage, isYoungerMode = false) {
   const bodyH = s.bodyH * bodyScaleY;
 
   return (
-    <g stroke="#462C7D" strokeWidth={cartoonyStroke} strokeLinejoin="round" strokeLinecap="round">
-      <ellipse cx={cx} cy={s.pawY + 6} rx={s.bodyW * 0.72} ry={4} fill="#462C7D" opacity={0.2} stroke="none" />
+    <g stroke={color1} strokeWidth={cartoonyStroke} strokeLinejoin="round" strokeLinecap="round">
+      <ellipse cx={cx} cy={s.pawY + 6} rx={s.bodyW * 0.72} ry={4} fill={color1} opacity={0.2} stroke="none" />
       {earArt[cfg.ear]}
       <ellipse cx={cx} cy={s.headY + 1} rx={s.headW * 0.45 * headScale} ry={headRy} fill={cfg.base} />
       <ellipse cx={cx} cy={s.headY + 2} rx={s.headW * 0.35 * headScale} ry={s.headH * 0.29 * headScale} fill={cfg.light} opacity={0.88} stroke="none" />
@@ -66,8 +79,8 @@ function getPetArt(type, stage, isYoungerMode = false) {
 
       <circle cx={eyeL} cy={s.eyeY} r={s.eyeR * eyeBoost} fill={cfg.eye} />
       <circle cx={eyeR} cy={s.eyeY} r={s.eyeR * eyeBoost} fill={cfg.eye} />
-      <circle cx={eyeL - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill="#FF70BF" stroke="none" />
-      <circle cx={eyeR - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill="#FF70BF" stroke="none" />
+      <circle cx={eyeL - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill={color3} stroke="none" />
+      <circle cx={eyeR - 0.8} cy={s.eyeY - 0.8} r={Math.max(0.9, s.eyeR * eyeBoost - 1.2)} fill={color3} stroke="none" />
       <path d={`M${cx - 2.4} ${s.mouthY} Q${cx} ${s.mouthY + 2.8} ${cx + 2.4} ${s.mouthY}`} fill="none" stroke={cfg.accent} strokeWidth={1.3} />
       <ellipse cx={cx} cy={s.mouthY - 1.5} rx={1.7} ry={1.25} fill={cfg.accent} stroke="none" />
 
@@ -80,7 +93,7 @@ function getPetArt(type, stage, isYoungerMode = false) {
       {cfg.extra === "collar" && <rect x={cx - 7} y={s.headY + 11} width={14} height={2.5} rx={1.2} fill={cfg.accent} stroke="none" />}
       {cfg.extra === "tail" && <path d={`M${cx + bodyW / 2 - 1} ${s.headY + 20} Q${cx + bodyW / 2 + 7} ${s.headY + 15} ${cx + bodyW / 2 + 3} ${s.headY + 10}`} fill="none" stroke={cfg.dark} strokeWidth={1.7} />}
       {cfg.extra === "cheeks" && <><ellipse cx={cx - 6.5} cy={s.mouthY - 0.5} rx={2.2} ry={1.2} fill={cfg.light} stroke="none" opacity={0.95} /><ellipse cx={cx + 6.5} cy={s.mouthY - 0.5} rx={2.2} ry={1.2} fill={cfg.light} stroke="none" opacity={0.95} /></>}
-      {isYoungerMode && <><circle cx={cx - 9} cy={s.mouthY - 2} r={1.2} fill="#FF70BF" stroke="none" opacity={0.8} /><circle cx={cx + 9} cy={s.mouthY - 2} r={1.2} fill="#FF70BF" stroke="none" opacity={0.8} /></>}
+      {isYoungerMode && <><circle cx={cx - 9} cy={s.mouthY - 2} r={1.2} fill={color3} stroke="none" opacity={0.8} /><circle cx={cx + 9} cy={s.mouthY - 2} r={1.2} fill={color3} stroke="none" opacity={0.8} /></>}
     </g>
   );
 }
@@ -107,7 +120,7 @@ function PixelPet({ type, growth, size = 80, tint, petSize = "normal", opacity =
         </radialGradient>
       </defs>
       <circle cx="26" cy="24" r="20" fill="url(#petStudioGlow)" />
-      {outline && <rect x="1.4" y="1.4" width="49.2" height="49.2" rx="9" fill="none" stroke="#D552A3" strokeWidth="2.8" strokeDasharray="2 1" />}
+      {outline && <rect x="1.4" y="1.4" width="49.2" height="49.2" rx="9" fill="none" stroke={color2} strokeWidth="2.8" strokeDasharray="2 1" />}
       {art}
     </svg>
   );
@@ -137,16 +150,16 @@ function ScratchBlock({ def, value, onChange, onRemove, index, active, isYounger
       draggable
       onDragStart={e => e.dataTransfer.setData("seq-index", String(index))}
       style={{
-        display: "flex", alignItems: "center", gap: 8, background: active ? "#FF70BF" : def.color,
+        display: "flex", alignItems: "center", gap: 8, background: active ? STUDIO_COLORS.accentSoft : def.color,
         borderRadius: 12, padding: size.pad, cursor: "grab", userSelect: "none",
         boxShadow: active ? `0 0 0 3px ${def.color}, 0 4px 12px rgba(0,0,0,0.3)` : "0 3px 0 rgba(0,0,0,0.2)",
         marginBottom: 6, transition: "box-shadow 0.15s"
       }}
     >
       <span style={{ fontSize: size.icon, flexShrink: 0 }}>{iconText}</span>
-      <span style={{ color: active ? def.color : "#FF70BF", fontWeight: 700, fontSize: size.label, flex: 1 }}>{labelText}</span>
+      <span style={{ color: active ? def.color : STUDIO_COLORS.accentSoft, fontWeight: 700, fontSize: size.label, flex: 1 }}>{labelText}</span>
       {def.hasInput === "colour" && (
-        <input type="color" value={value || "#FF70BF"} onChange={e => onChange(e.target.value)}
+        <input type="color" value={value || color2} onChange={e => onChange(e.target.value)}
           style={{ width: isYoungerMode ? 30 : 24, height: isYoungerMode ? 30 : 24, border: "none", borderRadius: 6, cursor: "pointer", padding: 0 }} />)}
       {def.hasInput === "text" && (
         <input value={value || ""} onChange={e => onChange(e.target.value)} placeholder={def.placeholder}
@@ -172,13 +185,13 @@ function PaletteBlock({ def, onAdd, isYoungerMode }) {
     <div onClick={() => onAdd(def)} draggable onDragStart={e => e.dataTransfer.setData("palette-id", def.id)}
       style={{ display: "flex", alignItems: "center", gap: isYoungerMode ? 9 : 6, background: def.color, borderRadius: 9, padding: isYoungerMode ? "10px 12px" : "6px 10px", cursor: "pointer", userSelect: "none", boxShadow: "0 2px 0 rgba(0,0,0,0.18)", marginBottom: 4 }}>
       <span style={{ fontSize: isYoungerMode ? 20 : 14 }}>{iconText}</span>
-      <span style={{ color: "#FF70BF", fontWeight: 700, fontSize: isYoungerMode ? 14 : 11 }}>{labelText}</span>
+      <span style={{ color: STUDIO_COLORS.accentSoft, fontWeight: 700, fontSize: isYoungerMode ? 14 : 11 }}>{labelText}</span>
     </div>
   );
 }
 
 function LiveStage({ pet, anim, running }) {
-  const rainbowColors = ["#D552A3", "#D552A3", "#D552A3", "#462C7D", "#D552A3", "#FF70BF", "#FF70BF"];
+  const rainbowColors = [STUDIO_COLORS.accent, STUDIO_COLORS.accent, STUDIO_COLORS.accent, STUDIO_COLORS.darkSurface, STUDIO_COLORS.accent, STUDIO_COLORS.accentSoft, STUDIO_COLORS.accentSoft];
   const [rainbowIdx, setRainbowIdx] = useState(0);
   const rainbowRef = useRef(null);
   const wallpaper = anim.wallpaper || "none";
@@ -202,18 +215,18 @@ function LiveStage({ pet, anim, running }) {
   const confettiPieces = ["🎊", "🎉", "⭐", "🌟", "✨", "🎈"];
 
   return (
-    <div style={{ background: anim.wallColor || "#462C7D", borderRadius: 12, padding: 12, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 260, position: "relative", overflow: "hidden", transition: "background 0.25s", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -20px 50px rgba(0,0,0,0.25)" }}>
+    <div style={{ background: anim.wallColor || STUDIO_COLORS.darkSurface, borderRadius: 12, padding: 12, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 260, position: "relative", overflow: "hidden", transition: "background 0.25s", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -20px 50px rgba(0,0,0,0.25)" }}>
       {["10%,15%", "80%,10%", "50%,5%", "20%,70%", "75%,60%", "40%,80%", "90%,40%"].map((pos, i) => (
-        <div key={i} style={{ position: "absolute", left: pos.split(",")[0], top: pos.split(",")[1], width: 2, height: 2, background: "#FF70BF", borderRadius: "50%", opacity: 0.4 }} />
+        <div key={i} style={{ position: "absolute", left: pos.split(",")[0], top: pos.split(",")[1], width: 2, height: 2, background: STUDIO_COLORS.accentSoft, borderRadius: "50%", opacity: 0.4 }} />
       ))}
       {wallpaper !== "none" && (
-        <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "repeat(5,1fr)", alignContent: "space-between", padding: "8px 12px 36px", opacity: 0.28, pointerEvents: "none", color: "#FF70BF", fontSize: 14 }}>
+        <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "repeat(5,1fr)", alignContent: "space-between", padding: "8px 12px 36px", opacity: 0.28, pointerEvents: "none", color: STUDIO_COLORS.accentSoft, fontSize: 14 }}>
           {Array.from({ length: 20 }).map((_, i) => (
             <span key={i} style={{ textAlign: "center" }}>{wallpaperEmoji}</span>
           ))}
         </div>
       )}
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 32, background: anim.floorColor || "#462C7D", borderTop: "2px solid #462C7D", transition: "background 0.25s" }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 32, background: anim.floorColor || STUDIO_COLORS.darkSurface, borderTop: `2px solid ${color1}`, transition: "background 0.25s" }} />
       {toyEmoji && <div style={{ position: "absolute", bottom: 8, right: 14, fontSize: 18, zIndex: 9 }}>{toyEmoji}</div>}
       {anim.confetti && (
         <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, fontSize: 20, pointerEvents: "none", zIndex: 10 }}>
@@ -221,14 +234,14 @@ function LiveStage({ pet, anim, running }) {
         </div>
       )}
       {(anim.bubble || anim.think) && (
-        <div style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", background: "#FF70BF", border: "2px solid #FF70BF", borderRadius: anim.think ? "50%" : 12, padding: "5px 14px", fontSize: 12, fontWeight: 700, color: "#831C91", whiteSpace: "nowrap", zIndex: 10, maxWidth: 150, textAlign: "center" }}>
+        <div style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", background: STUDIO_COLORS.accentSoft, border: `2px solid ${color2}`, borderRadius: anim.think ? "50%" : 12, padding: "5px 14px", fontSize: 12, fontWeight: 700, color: STUDIO_COLORS.text, whiteSpace: "nowrap", zIndex: 10, maxWidth: 150, textAlign: "center" }}>
           {anim.bubble || anim.think}
           <span style={{ position: "absolute", bottom: -10, left: "50%", transform: "translateX(-50%)", fontSize: 10 }}>{anim.think ? "•••" : "▼"}</span>
         </div>
       )}
-      {anim.zzz && <div style={{ position: "absolute", top: 20, right: "25%", fontSize: 14, fontWeight: 800, color: "#D552A3", zIndex: 10 }}>Zzz…</div>}
+      {anim.zzz && <div style={{ position: "absolute", top: 20, right: "25%", fontSize: 14, fontWeight: 800, color: STUDIO_COLORS.accent, zIndex: 10 }}>Zzz…</div>}
       {anim.sparkle && <div style={{ position: "absolute", top: 16, right: "22%", fontSize: 18, zIndex: 10 }}>✨</div>}
-      {anim.shine && <div style={{ position: "absolute", width: 120, height: 120, borderRadius: "50%", border: "3px solid #D552A3", opacity: 0.7, pointerEvents: "none" }} />}
+      {anim.shine && <div style={{ position: "absolute", width: 120, height: 120, borderRadius: "50%", border: `3px solid ${color2}`, opacity: 0.7, pointerEvents: "none" }} />}
       <div style={{
         transform: `translateX(${anim.x}px) translateY(${anim.y}px) rotate(${anim.spin}deg) scale(${anim.scale})`,
         transition: `transform ${anim.speedMs || 250}ms`,
@@ -239,8 +252,8 @@ function LiveStage({ pet, anim, running }) {
         <div style={{ position: "absolute", inset: "auto 50% -4px", transform: "translateX(-50%)", width: 70, height: 11, borderRadius: "50%", background: "radial-gradient(circle, rgba(15,23,42,0.35), transparent 70%)", zIndex: -1 }} />
         <PixelPet type={pet.type} growth={pet.growth} size={90} tint={tintVal} petSize={anim.petSize} outline={anim.shine} isYoungerMode={anim.isYoungerMode} />
       </div>
-      {running && <div style={{ position: "absolute", bottom: 6, right: 8, fontSize: 10, color: "#462C7D", fontWeight: 700 }}>● running</div>}
-      <p style={{ position: "absolute", bottom: 6, left: 8, margin: 0, fontSize: 10, color: "#462C7D", fontWeight: 600 }}>{pet.name} · {getStage(pet.growth).name}</p>
+      {running && <div style={{ position: "absolute", bottom: 6, right: 8, fontSize: 10, color: STUDIO_COLORS.darkSurface, fontWeight: 700 }}>● running</div>}
+      <p style={{ position: "absolute", bottom: 6, left: 8, margin: 0, fontSize: 10, color: STUDIO_COLORS.darkSurface, fontWeight: 600 }}>{pet.name} · {getStage(pet.growth).name}</p>
     </div>
   );
 }
@@ -252,7 +265,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
   const [values, setValues] = useState({});
   const [running, setRunning] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
-  const [anim, setAnim] = useState({ x: 0, y: 0, spin: 0, scale: 1, bubble: "", think: "", confetti: false, zzz: false, sparkle: false, shine: false, ghost: false, rainbow: false, pulse: false, tint: undefined, petSize: "normal", speedMs: 250, wallColor: "#462C7D", floorColor: "#462C7D", wallpaper: "none", toy: "none" });
+  const [anim, setAnim] = useState({ x: 0, y: 0, spin: 0, scale: 1, bubble: "", think: "", confetti: false, zzz: false, sparkle: false, shine: false, ghost: false, rainbow: false, pulse: false, tint: undefined, petSize: "normal", speedMs: 250, wallColor: color1, floorColor: color1, wallpaper: "none", toy: "none" });
   const [feedMsg, setFeedMsg] = useState(null);
   const [selCat, setSelCat] = useState("event");
   const stopRef = useRef(false);
@@ -298,7 +311,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
     const dur = speedMs || 250;
 
     if (id === "colour") {
-      const hue = parseInt((val || "#FF70BF").replace("#", ""), 16) % 360;
+      const hue = parseInt((val || color2).replace("#", ""), 16) % 360;
       setAnim(s => ({ ...s, tint: hue, rainbow: false }));
     } else if (id === "rainbow") {
       setAnim(s => ({ ...s, rainbow: true })); await sleepMs(1200);
@@ -392,9 +405,9 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
       playSound(val || "pop");
       await sleepMs(300);
     } else if (id === "wallpaint") {
-      setAnim(s => ({ ...s, wallColor: val || "#462C7D" }));
+      setAnim(s => ({ ...s, wallColor: val || color1 }));
     } else if (id === "floorpaint") {
-      setAnim(s => ({ ...s, floorColor: val || "#462C7D" }));
+      setAnim(s => ({ ...s, floorColor: val || color1 }));
     } else if (id === "wallpaper") {
       setAnim(s => ({ ...s, wallpaper: val || "none" }));
     } else if (id === "settoy") {
@@ -467,18 +480,18 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
   };
 
   return (
-    <div style={{ background: "#FF70BF", border: "2px solid #FF70BF", borderRadius: 18, marginBottom: 16, overflow: "hidden" }}>
-      <div style={{ display: "flex", borderBottom: "2px solid #FF70BF", overflowX: "auto" }}>
+    <div style={{ background: STUDIO_COLORS.accentSoft, border: `2px solid ${color2}`, borderRadius: 18, marginBottom: 16, overflow: "hidden" }}>
+      <div style={{ display: "flex", borderBottom: `2px solid ${color2}`, overflowX: "auto" }}>
         {[ ["studio", "🎨 Studio"], ["shop", "🛒 Shop"], ["choose", "✏️ Choose"] ].map(([t, l]) => (
-          <button key={t} onClick={() => setStudioTab(t)} style={{ flex: 1, padding: "10px 4px", border: "none", cursor: "pointer", fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", minWidth: 80, background: studioTab === t ? "#FF70BF" : "transparent", color: studioTab === t ? "#831C91" : "#D552A3", borderBottom: studioTab === t ? "3px solid #D552A3" : "none" }}>{l}</button>
+          <button key={t} onClick={() => setStudioTab(t)} style={{ flex: 1, padding: "10px 4px", border: "none", cursor: "pointer", fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", minWidth: 80, background: studioTab === t ? STUDIO_COLORS.accentSoft : "transparent", color: studioTab === t ? STUDIO_COLORS.text : STUDIO_COLORS.accent, borderBottom: studioTab === t ? `3px solid ${color2}` : "none" }}>{l}</button>
         ))}
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: isYoungerMode ? "10px 12px" : "8px 12px", borderBottom: "1px solid #FF70BF", background: "#FF70BF" }}>
-        <p style={{ margin: 0, color: "#831C91", fontWeight: 700, fontSize: isYoungerMode ? 14 : 12 }}>Pet Studio Mode:</p>
-        <div style={{ display: "flex", gap: 6, background: "#FF70BF", borderRadius: 999, padding: 3 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: isYoungerMode ? "10px 12px" : "8px 12px", borderBottom: `1px solid ${color2}`, background: STUDIO_COLORS.accentSoft }}>
+        <p style={{ margin: 0, color: STUDIO_COLORS.text, fontWeight: 700, fontSize: isYoungerMode ? 14 : 12 }}>Pet Studio Mode:</p>
+        <div style={{ display: "flex", gap: 6, background: STUDIO_COLORS.accentSoft, borderRadius: 999, padding: 3 }}>
           {[ ["older", "Older Kids"], ["younger", "Younger Kids (5-7)"] ].map(([mode, label]) => (
             <button key={mode} onClick={() => setKidMode(mode)}
-              style={{ border: "none", cursor: "pointer", borderRadius: 999, fontWeight: 700, fontSize: isYoungerMode ? 13 : 11, padding: isYoungerMode ? "8px 12px" : "5px 10px", background: kidMode === mode ? "#D552A3" : "transparent", color: kidMode === mode ? "#FF70BF" : "#831C91" }}>
+              style={{ border: "none", cursor: "pointer", borderRadius: 999, fontWeight: 700, fontSize: isYoungerMode ? 13 : 11, padding: isYoungerMode ? "8px 12px" : "5px 10px", background: kidMode === mode ? STUDIO_COLORS.accent : "transparent", color: kidMode === mode ? STUDIO_COLORS.accentSoft : STUDIO_COLORS.text }}>
               {label}
             </button>
           ))}
@@ -487,10 +500,10 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
 
       {studioTab === "studio" && (
         <div style={{ display: "flex", minHeight: 420 }}>
-          <div style={{ width: isYoungerMode ? 204 : 152, flexShrink: 0, background: "#462C7D", padding: isYoungerMode ? 10 : 8, overflowY: "auto" }}>
+          <div style={{ width: isYoungerMode ? 204 : 152, flexShrink: 0, background: STUDIO_COLORS.darkSurface, padding: isYoungerMode ? 10 : 8, overflowY: "auto" }}>
             <div style={{ display: "flex", gap: 3, flexWrap: "wrap", marginBottom: 8 }}>
               {availableCats.map(([k, v]) => (
-                <button key={k} onClick={() => setSelCat(k)} style={{ fontSize: isYoungerMode ? 12 : 9, padding: isYoungerMode ? "5px 9px" : "3px 6px", borderRadius: 999, border: "none", cursor: "pointer", fontWeight: 700, background: selCat === k ? CAT_COLORS[k] : "#462C7D", color: "#FF70BF" }}>{v}</button>
+                <button key={k} onClick={() => setSelCat(k)} style={{ fontSize: isYoungerMode ? 12 : 9, padding: isYoungerMode ? "5px 9px" : "3px 6px", borderRadius: 999, border: "none", cursor: "pointer", fontWeight: 700, background: selCat === k ? CAT_COLORS[k] : STUDIO_COLORS.darkSurface, color: STUDIO_COLORS.accentSoft }}>{v}</button>
               ))}
             </div>
             {paletteDefs.filter(d => d.cat === selCat).map(d => (
@@ -498,22 +511,22 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
             ))}
           </div>
 
-          <div style={{ width: isYoungerMode ? 250 : 200, flexShrink: 0, background: "#462C7D", padding: isYoungerMode ? 12 : 10, overflowY: "auto", borderLeft: "1px solid #462C7D", borderRight: "1px solid #462C7D" }}
+          <div style={{ width: isYoungerMode ? 250 : 200, flexShrink: 0, background: STUDIO_COLORS.darkSurface, padding: isYoungerMode ? 12 : 10, overflowY: "auto", borderLeft: `1px solid ${color1}`, borderRight: `1px solid ${color1}` }}
             onDragOver={e => e.preventDefault()} onDrop={onDropSeq}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: isYoungerMode ? 14 : 11, color: "#D552A3", fontWeight: 700 }}>Script</span>
+              <span style={{ fontSize: isYoungerMode ? 14 : 11, color: STUDIO_COLORS.accent, fontWeight: 700 }}>Script</span>
               <div style={{ display: "flex", gap: 4 }}>
                 {!running ? (
-                  <button onClick={runSequence} disabled={sequence.length === 0} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: sequence.length === 0 ? "#462C7D" : "#462C7D", color: "#FF70BF" }}>▶ Run</button>
+                  <button onClick={runSequence} disabled={sequence.length === 0} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: sequence.length === 0 ? STUDIO_COLORS.darkSurface : STUDIO_COLORS.darkSurface, color: STUDIO_COLORS.accentSoft }}>▶ Run</button>
                 ) : (
-                  <button onClick={stopScript} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: "#D552A3", color: "#FF70BF" }}>■ Stop</button>
+                  <button onClick={stopScript} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: STUDIO_COLORS.accent, color: STUDIO_COLORS.accentSoft }}>■ Stop</button>
                 )}
-                <button onClick={clearSeq} style={{ padding: isYoungerMode ? "7px 11px" : "4px 8px", borderRadius: 7, border: "none", cursor: "pointer", fontSize: isYoungerMode ? 14 : 11, background: "#462C7D", color: "#D552A3" }}>🗑</button>
+                <button onClick={clearSeq} style={{ padding: isYoungerMode ? "7px 11px" : "4px 8px", borderRadius: 7, border: "none", cursor: "pointer", fontSize: isYoungerMode ? 14 : 11, background: STUDIO_COLORS.darkSurface, color: STUDIO_COLORS.accent }}>🗑</button>
               </div>
             </div>
             {sequence.length === 0 ? (
-              <div style={{ border: "2px dashed #462C7D", borderRadius: 10, padding: "24px 10px", textAlign: "center" }}>
-                <p style={{ color: "#462C7D", fontSize: isYoungerMode ? 15 : 11, margin: 0, fontWeight: 600 }}>Drop blocks here!</p>
+              <div style={{ border: `2px dashed ${color1}`, borderRadius: 10, padding: "24px 10px", textAlign: "center" }}>
+                <p style={{ color: STUDIO_COLORS.darkSurface, fontSize: isYoungerMode ? 15 : 11, margin: 0, fontWeight: 600 }}>Drop blocks here!</p>
               </div>
             ) : sequence.map((block, idx) => {
               const def = BLOCK_DEFS.find(d => d.id === block.id);
@@ -528,8 +541,8 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
             })}
           </div>
 
-          <div style={{ flex: 1, background: "#462C7D", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-            <p style={{ margin: 0, fontSize: 11, color: "#462C7D", fontWeight: 700, textAlign: "center" }}>🎬 Live Stage</p>
+          <div style={{ flex: 1, background: STUDIO_COLORS.darkSurface, padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+            <p style={{ margin: 0, fontSize: 11, color: STUDIO_COLORS.darkSurface, fontWeight: 700, textAlign: "center" }}>🎬 Live Stage</p>
             <LiveStage pet={pet} anim={{ ...anim, isYoungerMode }} running={running} />
           </div>
         </div>
@@ -537,37 +550,37 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
 
       {studioTab === "shop" && (
         <div style={{ padding: 14 }}>
-          <p style={{ fontSize: 13, color: "#831C91", marginBottom: 12, fontWeight: 600 }}>Feed {pet.name} to help them grow! You have <strong>{availXP} XP</strong> 🌟</p>
+          <p style={{ fontSize: 13, color: STUDIO_COLORS.text, marginBottom: 12, fontWeight: 600 }}>Feed {pet.name} to help them grow! You have <strong>{availXP} XP</strong> 🌟</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {FOODS.map(f => (
-              <button key={f.id} onClick={() => feed(f)} disabled={availXP < f.xpCost} style={{ padding: "14px 10px", borderRadius: 14, border: "2px solid", cursor: availXP >= f.xpCost ? "pointer" : "not-allowed", borderColor: availXP >= f.xpCost ? "#FF70BF" : "#FF70BF", background: availXP >= f.xpCost ? "#FF70BF" : "#FF70BF", opacity: availXP >= f.xpCost ? 1 : 0.5, textAlign: "center" }}>
+              <button key={f.id} onClick={() => feed(f)} disabled={availXP < f.xpCost} style={{ padding: "14px 10px", borderRadius: 14, border: "2px solid", cursor: availXP >= f.xpCost ? "pointer" : "not-allowed", borderColor: color2, background: STUDIO_COLORS.accentSoft, opacity: availXP >= f.xpCost ? 1 : 0.5, textAlign: "center" }}>
                 <div style={{ fontSize: 28, marginBottom: 4 }}>{f.emoji}</div>
-                <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13, color: "#831C91" }}>{f.name}</p>
-                <p style={{ margin: 0, fontSize: 12, color: "#831C91" }}>💜 {f.xpCost} XP</p>
+                <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13, color: STUDIO_COLORS.text }}>{f.name}</p>
+                <p style={{ margin: 0, fontSize: 12, color: STUDIO_COLORS.text }}>💜 {f.xpCost} XP</p>
               </button>
             ))}
           </div>
-          {feedMsg && <p style={{ margin: "12px 0 0", fontWeight: 700, fontSize: 14, color: "#462C7D", textAlign: "center" }}>{feedMsg}</p>}
-          {nextStage && <p style={{ margin: "8px 0 0", fontSize: 12, color: "#831C91" }}>Next stage in {nextStage.minGrowth - pet.growth} growth.</p>}
+          {feedMsg && <p style={{ margin: "12px 0 0", fontWeight: 700, fontSize: 14, color: STUDIO_COLORS.darkSurface, textAlign: "center" }}>{feedMsg}</p>}
+          {nextStage && <p style={{ margin: "8px 0 0", fontSize: 12, color: STUDIO_COLORS.text }}>Next stage in {nextStage.minGrowth - pet.growth} growth.</p>}
         </div>
       )}
 
       {studioTab === "choose" && (
         <div style={{ padding: 14 }}>
-          <p style={{ fontSize: 13, color: "#831C91", marginBottom: 10, fontWeight: 600 }}>Choose your pet and name them!</p>
+          <p style={{ fontSize: 13, color: STUDIO_COLORS.text, marginBottom: 10, fontWeight: 600 }}>Choose your pet and name them!</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
             {PET_TYPES.map(p => (
-              <button key={p.id} onClick={() => setPet({ ...pet, type: p.id })} style={{ padding: "12px 8px", borderRadius: 14, border: "2px solid", cursor: "pointer", borderColor: pet.type === p.id ? "#FF70BF" : "#FF70BF", background: pet.type === p.id ? "linear-gradient(180deg,#FF70BF,#FF70BF)" : "linear-gradient(180deg,#FF70BF,#FF70BF)", textAlign: "center", boxShadow: pet.type === p.id ? "0 10px 20px rgba(192,38,211,0.2)" : "0 4px 10px rgba(15,23,42,0.08)", transition: "all 0.2s" }}>
+              <button key={p.id} onClick={() => setPet({ ...pet, type: p.id })} style={{ padding: "12px 8px", borderRadius: 14, border: "2px solid", cursor: "pointer", borderColor: color2, background: `linear-gradient(180deg, ${STUDIO_COLORS.accentSoft}, ${STUDIO_COLORS.panel})`, textAlign: "center", boxShadow: pet.type === p.id ? "0 10px 20px rgba(126,87,255,0.2)" : "0 4px 10px rgba(15,23,42,0.08)", transition: "all 0.2s" }}>
                 <div style={{ borderRadius: 12, padding: "6px 0 4px", background: "radial-gradient(circle at 50% 30%, rgba(255,255,255,0.9), rgba(248,250,252,0))" }}>
                   <PixelPet type={p.id} growth={0} size={54} isYoungerMode={isYoungerMode} />
                 </div>
-                <p style={{ margin: "6px 0 0", fontWeight: 700, fontSize: 13, color: pet.type === p.id ? "#831C91" : "#462C7D" }}>{p.name}</p>
+                <p style={{ margin: "6px 0 0", fontWeight: 700, fontSize: 13, color: pet.type === p.id ? STUDIO_COLORS.text : STUDIO_COLORS.darkSurface }}>{p.name}</p>
               </button>
             ))}
           </div>
           <input value={pet.name} onChange={e => setPet({ ...pet, name: e.target.value })} placeholder="Name your pet!" maxLength={16}
-            style={{ width: "100%", boxSizing: "border-box", fontSize: 14, borderRadius: 10, border: "2px solid #FF70BF", padding: "8px 12px", fontWeight: 600, color: "#831C91" }} />
-          <p style={{ fontSize: 12, color: "#831C91", margin: "10px 0 6px", fontWeight: 700 }}>
+            style={{ width: "100%", boxSizing: "border-box", fontSize: 14, borderRadius: 10, border: `2px solid ${color2}`, padding: "8px 12px", fontWeight: 600, color: STUDIO_COLORS.text }} />
+          <p style={{ fontSize: 12, color: STUDIO_COLORS.text, margin: "10px 0 6px", fontWeight: 700 }}>
             {isYoungerMode ? "Cute & goofy name ideas:" : "Cool name ideas:"}
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -576,9 +589,9 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
                 key={n}
                 onClick={() => setPet({ ...pet, name: n })}
                 style={{
-                  border: "1px solid #FF70BF",
-                  background: "#FF70BF",
-                  color: "#831C91",
+                  border: `1px solid ${color2}`,
+                  background: STUDIO_COLORS.accentSoft,
+                  color: STUDIO_COLORS.text,
                   borderRadius: 999,
                   padding: "4px 10px",
                   fontSize: 12,
