@@ -1,17 +1,17 @@
-export const uiColors = {
-  // Child-friendly playful palette with high readability contrast.
-  textPrimary: "#2B235A",
-  textSecondary: "#3D2C8D",
-  textMuted: "#6B5AA6",
-  borderSubtle: "#D9CCFF",
-  surfaceBase: "#FFFDFE",
-  surfaceRaised: "#F3EEFF",
-  surfaceInteractive: "#E8DDFF",
+import { WEBSITE_COLORS } from "./colors.js";
 
-  // Bright but soft accents for fun interactions.
-  accent: "#7E57FF",
-  accentHover: "#6D46F4",
-  accentSoft: "#E8DFFF",
-  success: "#2CB67D",
-  danger: "#E5537A",
+export const uiColors = {
+  textPrimary: WEBSITE_COLORS.primaryText,
+  textSecondary: WEBSITE_COLORS.secondaryText,
+  textMuted: WEBSITE_COLORS.mutedText,
+  borderSubtle: WEBSITE_COLORS.border,
+  surfaceBase: WEBSITE_COLORS.background,
+  surfaceRaised: WEBSITE_COLORS.surface,
+  surfaceInteractive: WEBSITE_COLORS.interactiveSurface,
+  accent: WEBSITE_COLORS.accent,
+  accentHover: WEBSITE_COLORS.accentHover,
+  accentSoft: WEBSITE_COLORS.accentSoft,
+  success: WEBSITE_COLORS.success,
+  danger: WEBSITE_COLORS.danger,
+  onAccent: WEBSITE_COLORS.onAccent,
 };
