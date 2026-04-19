@@ -1,17 +1,17 @@
 export const uiColors = {
-  // Neutrals for readability / surface hierarchy.
-  textPrimary: "#2D214F",
-  textSecondary: "#5A4B84",
-  textMuted: "#7A69AA",
-  borderSubtle: "#D9D2EF",
-  surfaceBase: "#FFFFFF",
-  surfaceRaised: "#F6F3FF",
-  surfaceInteractive: "#EFE9FF",
+  // Child-friendly playful palette with high readability contrast.
+  textPrimary: "#2B235A",
+  textSecondary: "#3D2C8D",
+  textMuted: "#6B5AA6",
+  borderSubtle: "#D9CCFF",
+  surfaceBase: "#FFFDFE",
+  surfaceRaised: "#F3EEFF",
+  surfaceInteractive: "#E8DDFF",
 
-  // Brand accents for clear action semantics.
-  accent: "#7C4DFF",
-  accentHover: "#6A3FF0",
-  accentSoft: "#ECE4FF",
-  success: "#2F9E44",
-  danger: "#C92A2A",
+  // Bright but soft accents for fun interactions.
+  accent: "#7E57FF",
+  accentHover: "#6D46F4",
+  accentSoft: "#E8DFFF",
+  success: "#2CB67D",
+  danger: "#E5537A",
 };
