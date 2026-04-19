@@ -39,7 +39,7 @@ export function EntryForm({ initial, onSave, onCancel }) {
       <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
         {["coding", "gaming"].map((entryType) => (
           <button key={entryType} onClick={() => setType(entryType)} style={{ flex: 1, padding: "12px 0", borderRadius: 14, fontSize: 14, cursor: "pointer", fontWeight: 700, border: "2px solid", borderColor: type === entryType ? c.accent : c.borderSubtle, background: type === entryType ? c.accentSoft : c.surfaceBase, color: type === entryType ? c.accent : c.textPrimary }}>
-            {entryType === "coding" ? "💻 Coding Quest" : "🎮 Gaming Quest"}
+            {entryType === "coding" ? "🧑‍💻 Coding Quest" : "🕹️ Gaming Quest"}
           </button>
         ))}
       </div>
@@ -47,7 +47,7 @@ export function EntryForm({ initial, onSave, onCancel }) {
       <input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Name your quest!" style={{ width: "100%", marginBottom: 16, boxSizing: "border-box", fontSize: 14, borderRadius: 12, border: `2px solid ${c.borderSubtle}`, padding: "10px 14px" }} />
 
       <div style={{ marginBottom: 20 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 10 }}>Vibe Check ✌️</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 10 }}>How did it feel today?</p>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           {VIBES.map((vibe, index) => (
             <button key={index} onClick={() => setMood(index)} style={{ fontSize: 26, border: "2px solid", cursor: "pointer", borderRadius: 12, padding: "6px 10px", borderColor: mood === index ? VIBE_COLORS[index] : c.surfaceInteractive, backgroundColor: mood === index ? `${VIBE_COLORS[index]}22` : "transparent", transform: mood === index ? "scale(1.2)" : "scale(1)", transition: "all 0.15s" }}>{vibe}</button>
@@ -57,7 +57,7 @@ export function EntryForm({ initial, onSave, onCancel }) {
       </div>
 
       <div style={{ marginBottom: 20 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 10 }}>Quest Log 📜</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 10 }}>Your Story Notes 📓</p>
         {PROMPTS[type].map((prompt, index) => (
           <div key={index} style={{ marginBottom: 12 }}>
             <label style={{ fontSize: 13, color: c.textPrimary, display: "block", marginBottom: 4, fontWeight: 500 }}>{prompt}</label>
@@ -67,7 +67,7 @@ export function EntryForm({ initial, onSave, onCancel }) {
       </div>
 
       <div style={{ marginBottom: 24 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 8 }}>Tags 🏷️</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: c.textSecondary, marginBottom: 8 }}>Helpful Tags 🏷️</p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
           {SUGGESTED_TAGS[type].map((tag) => (
             <span key={tag} onClick={() => addTag(tag)} style={{ cursor: "pointer", fontSize: 12, padding: "4px 12px", borderRadius: 999, border: "2px solid", fontWeight: 500, borderColor: tags.includes(tag) ? c.accent : c.borderSubtle, background: tags.includes(tag) ? c.accentSoft : c.surfaceBase, color: tags.includes(tag) ? c.accent : c.textPrimary }}>{tag}</span>
@@ -102,9 +102,9 @@ export function EntryForm({ initial, onSave, onCancel }) {
         </div>
       ) : (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button onClick={save} style={{ padding: "10px 24px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>{initial ? "Save Changes ✅" : "Log Quest! ⚔️"}</button>
+          <button onClick={save} style={{ padding: "10px 24px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>{initial ? "Save Changes ✅" : "Log Quest! 🧭"}</button>
           {!initial && title && reflections.some(Boolean) && (
-            <button onClick={() => setShowCoach(true)} style={{ padding: "10px 18px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.surfaceRaised, color: c.textPrimary }}>Ask Coach 🤖</button>
+            <button onClick={() => setShowCoach(true)} style={{ padding: "10px 18px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.surfaceRaised, color: c.textPrimary }}>Ask Coach 🧑‍🏫</button>
           )}
           <button onClick={onCancel} style={{ padding: "10px 16px", borderRadius: 12, cursor: "pointer", border: `2px solid ${c.borderSubtle}`, background: c.surfaceBase, color: c.textPrimary, fontWeight: 500 }}>Cancel</button>
         </div>

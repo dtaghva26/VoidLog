@@ -14,7 +14,7 @@ export function EntryCard({ entry, onDelete, onEdit }) {
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
-            <span style={{ fontSize: 18 }}>{entry.type === "coding" ? "💻" : "🎮"}</span>
+            <span style={{ fontSize: 18 }}>{entry.type === "coding" ? "🧑‍💻" : "🕹️"}</span>
             <span style={{ fontSize: 12, color: c.textMuted, fontWeight: 500 }}>{date}</span>
             <span style={{ fontSize: 18, background: `${VIBE_COLORS[entry.mood]}22`, borderRadius: 8, padding: "1px 6px" }}>{VIBES[entry.mood]}</span>
           </div>
@@ -41,7 +41,7 @@ export function EntryCard({ entry, onDelete, onEdit }) {
           ))}
           {showCoach && <AiPanel entry={entry} onClose={() => setShowCoach(false)} />}
           <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
-            <button onClick={() => setShowCoach(true)} style={{ fontSize: 12, padding: "5px 14px", borderRadius: 999, cursor: "pointer", border: `2px solid ${c.accent}`, background: c.surfaceRaised, color: c.textPrimary, fontWeight: 600 }}>🤖 Ask Coach</button>
+            <button onClick={() => setShowCoach(true)} style={{ fontSize: 12, padding: "5px 14px", borderRadius: 999, cursor: "pointer", border: `2px solid ${c.accent}`, background: c.surfaceRaised, color: c.textPrimary, fontWeight: 600 }}>🧑‍🏫 Ask Coach</button>
             <button onClick={() => onEdit(entry)} style={{ fontSize: 12, padding: "5px 14px", borderRadius: 999, cursor: "pointer", border: `2px solid ${c.borderSubtle}`, background: c.surfaceRaised, color: c.textSecondary, fontWeight: 600 }}>✏️ Edit</button>
             <button onClick={() => onDelete(entry.id)} style={{ fontSize: 12, padding: "5px 14px", borderRadius: 999, cursor: "pointer", border: `2px solid ${c.borderSubtle}`, background: c.surfaceRaised, color: c.danger, fontWeight: 600 }}>🗑️ Delete</button>
           </div>

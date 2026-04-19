@@ -15,15 +15,15 @@ export default function AppHeader({ showPet, onTogglePet, onToggleBadges, onTogg
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
       <div>
-        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: c.textSecondary }}>⚔️ Quest Log</h1>
-        <p style={{ margin: "2px 0 0", fontSize: 13, color: c.textMuted }}>your coding & gaming diary</p>
+        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: c.textSecondary }}>🧭 Quest Log</h1>
+        <p style={{ margin: "2px 0 0", fontSize: 13, color: c.textMuted }}>your coding + gaming adventure diary</p>
       </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <button onClick={onTogglePet} style={{ ...controlStyle, background: showPet ? c.accentSoft : c.surfaceBase }}>🐾 Pet</button>
-        <button onClick={onToggleBadges} style={controlStyle}>🏅</button>
-        <button onClick={onToggleWeekly} style={controlStyle}>✨</button>
-        <button onClick={onExport} style={controlStyle}>⬇</button>
-        <button onClick={onNew} style={{ padding: "7px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 800, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>+ Quest</button>
+        <button onClick={onToggleBadges} style={controlStyle}>🏆 Badges</button>
+        <button onClick={onToggleWeekly} style={controlStyle}>🗓️ Weekly</button>
+        <button onClick={onExport} style={controlStyle}>📄 Export</button>
+        <button onClick={onNew} style={{ padding: "7px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 800, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>+ New Quest</button>
       </div>
     </div>
   );
