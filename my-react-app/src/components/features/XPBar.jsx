@@ -11,7 +11,7 @@ export default function XPBar({ entries }) {
   return (
     <div style={{ background: c.surfaceRaised, borderRadius: 14, padding: "12px 16px", marginBottom: 12, border: `2px solid ${c.borderSubtle}` }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-        <span style={{ fontWeight: 800, fontSize: 14, color: c.textSecondary }}>⚔️ Level {level}</span>
+        <span style={{ fontWeight: 800, fontSize: 14, color: c.textSecondary }}>⭐ Level {level}</span>
         <span style={{ fontSize: 12, color: c.textSecondary, fontWeight: 600 }}>{xp} XP</span>
       </div>
       <div style={{ background: c.surfaceRaised, borderRadius: 999, height: 12, overflow: "hidden" }}>

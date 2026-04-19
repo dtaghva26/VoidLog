@@ -47,7 +47,7 @@ export function getStage(g) { let s=STAGES[0]; for(const x of STAGES){if(g>=x.mi
 
 // ── BLOCK DEFINITIONS ──────────────────────────────────────────────
 export const BLOCK_DEFS = [
-  { id:"start",    cat:"event",   color:color2, label:"▶ When Start",      icon:"▶", youngerLabel:"Start", youngerIcons:"▶✨", hasInput:false },
+  { id:"start",    cat:"event",   color:color2, label:"▶ When Start",      icon:"🟢", youngerLabel:"Start", youngerIcons:"🟢✨", hasInput:false },
   { id:"pettap",   cat:"event",   color:color2, label:"👆 When Pet Tapped", icon:"👆", youngerLabel:"Tap Pet", youngerIcons:"👆🐾", hasInput:false },
   { id:"forever",  cat:"event",   color:color2, label:"🔁 Forever",        icon:"🔁", youngerLabel:"Loop", youngerIcons:"🔁♾️", hasInput:false },
   { id:"say",      cat:"looks",   color:color1, label:"💬 Say",            icon:"💬", youngerLabel:"Talk", youngerIcons:"💬🫧", hasInput:"text", placeholder:"Hello!" },
@@ -61,9 +61,9 @@ export const BLOCK_DEFS = [
   { id:"walk",     cat:"motion",  color:color1, label:"🚶 Walk",           icon:"🚶", hasInput:false },
   { id:"dance",    cat:"motion",  color:color1, label:"💃 Dance",          icon:"💃", youngerLabel:"Dance", youngerIcons:"💃🎶", hasInput:false },
   { id:"spin",     cat:"motion",  color:color1, label:"🌀 Spin",           icon:"🌀", youngerLabel:"Spin", youngerIcons:"🌀⭐", hasInput:false },
-  { id:"jump",     cat:"motion",  color:color1, label:"⬆ Jump",           icon:"⬆", youngerLabel:"Jump", youngerIcons:"⬆🐸", hasInput:false },
-  { id:"moveleft", cat:"motion",  color:color1, label:"⬅ Move Left",      icon:"⬅", hasInput:false },
-  { id:"moveright",cat:"motion",  color:color1, label:"➡ Move Right",     icon:"➡", hasInput:false },
+  { id:"jump",     cat:"motion",  color:color1, label:"🦘 Jump",           icon:"🦘", youngerLabel:"Jump", youngerIcons:"🦘🐸", hasInput:false },
+  { id:"moveleft", cat:"motion",  color:color1, label:"👣 Move Left",      icon:"👣", hasInput:false },
+  { id:"moveright",cat:"motion",  color:color1, label:"👣 Move Right",     icon:"➡", hasInput:false },
   { id:"centre",   cat:"motion",  color:color1, label:"🎯 Go to Centre",   icon:"🎯", youngerLabel:"Center", youngerIcons:"🎯🏠", hasInput:false },
   { id:"dash",     cat:"motion",  color:color1, label:"⚡ Dash",            icon:"⚡", hasInput:false },
   { id:"hop",      cat:"motion",  color:color1, label:"🐇 Hop",             icon:"🐇", hasInput:false },
@@ -87,7 +87,7 @@ export const BLOCK_DEFS = [
   { id:"restpet",  cat:"care",    color:color3, label:"🛏 Rest Time",      icon:"🛏", youngerLabel:"Rest", youngerIcons:"🛏💤", hasInput:false },
   { id:"wallpaint",cat:"home",    color:color1, label:"🖌 Paint Walls",    icon:"🖌", hasInput:"colour" },
   { id:"floorpaint",cat:"home",   color:color1, label:"🪵 Paint Floor",    icon:"🪵", hasInput:"colour" },
-  { id:"wallpaper",cat:"home",    color:color1, label:"🧱 Wallpaper",      icon:"🧱", youngerLabel:"Wall", youngerIcons:"🧱⭐", hasInput:"select", options:["none","stars","hearts","dots"] },
+  { id:"wallpaper",cat:"home",    color:color1, label:"🖼️ Wallpaper",      icon:"🖼️", youngerLabel:"Wall", youngerIcons:"🖼️⭐", hasInput:"select", options:["none","stars","hearts","dots"] },
   { id:"settoy",   cat:"home",    color:color1, label:"🧸 Place Toy",      icon:"🧸", youngerLabel:"Toy", youngerIcons:"🧸⚽", hasInput:"select", options:["none","ball","book","plant"] },
   { id:"speed",    cat:"control", color:color2, label:"⚡ Set Speed",      icon:"⚡", hasInput:"select", options:["slow","normal","fast"] },
   { id:"repeat",   cat:"control", color:color2, label:"🔄 Repeat",         icon:"🔄", hasInput:"number", placeholder:"3" },
