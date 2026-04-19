@@ -137,6 +137,10 @@ function playSound(type) {
     else if (type === "boing") { osc.type = "sine"; osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4); gain.gain.setValueAtTime(0.4, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4); osc.start(); osc.stop(ctx.currentTime + 0.4); }
     else if (type === "cheer") { [600, 800, 1000, 1200].forEach((f, i) => { const o2 = ctx.createOscillator(); const g2 = ctx.createGain(); o2.connect(g2); g2.connect(ctx.destination); o2.frequency.value = f; g2.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.08); g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.1); o2.start(ctx.currentTime + i * 0.08); o2.stop(ctx.currentTime + i * 0.08 + 0.1); }); }
     else if (type === "woosh") { osc.type = "sawtooth"; osc.frequency.setValueAtTime(200, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25); osc.start(); osc.stop(ctx.currentTime + 0.25); }
+    else if (type === "bark") { osc.type = "square"; osc.frequency.setValueAtTime(230, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.12); gain.gain.setValueAtTime(0.28, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16); osc.start(); osc.stop(ctx.currentTime + 0.16); }
+    else if (type === "meow") { osc.type = "triangle"; osc.frequency.setValueAtTime(450, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(280, ctx.currentTime + 0.22); gain.gain.setValueAtTime(0.24, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.26); osc.start(); osc.stop(ctx.currentTime + 0.26); }
+    else if (type === "chirp") { osc.type = "sine"; osc.frequency.setValueAtTime(1200, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.08); gain.gain.setValueAtTime(0.18, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12); osc.start(); osc.stop(ctx.currentTime + 0.12); }
+    else if (type === "ribbit") { osc.type = "square"; osc.frequency.setValueAtTime(320, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.18); gain.gain.setValueAtTime(0.3, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22); osc.start(); osc.stop(ctx.currentTime + 0.22); }
   } catch { }
 }
 
@@ -423,6 +427,42 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
     } else if (id === "sound") {
       playSound(val || "pop");
       await sleepMs(300);
+    } else if (id === "animalsound") {
+      playSound(val || "bark");
+      await sleepMs(300);
+    } else if (id === "happy") {
+      setAnim(s => ({ ...s, bubble: "Yay!", think: "", pulse: true, scale: 1.15 }));
+      await sleepMs(slow ? 1400 : fast ? 500 : 900);
+      setAnim(s => ({ ...s, bubble: "", pulse: false, scale: 1 }));
+    } else if (id === "sad") {
+      setAnim(s => ({ ...s, bubble: "Aww…", think: "", y: 10 }));
+      await sleepMs(slow ? 1400 : fast ? 500 : 900);
+      setAnim(s => ({ ...s, bubble: "", y: 0 }));
+    } else if (id === "excited") {
+      setAnim(s => ({ ...s, bubble: "Let’s go!", think: "", confetti: true }));
+      playSound("cheer");
+      await sleepMs(slow ? 1200 : fast ? 450 : 800);
+      setAnim(s => ({ ...s, bubble: "", confetti: false }));
+    } else if (id === "sleepy") {
+      setAnim(s => ({ ...s, think: "So sleepy...", bubble: "", zzz: true }));
+      await sleepMs(slow ? 1600 : fast ? 500 : 900);
+      setAnim(s => ({ ...s, think: "", zzz: false }));
+    } else if (id === "feedpet") {
+      setAnim(s => ({ ...s, bubble: "Yum!", sparkle: true }));
+      await sleepMs(slow ? 1200 : fast ? 450 : 800);
+      setAnim(s => ({ ...s, bubble: "", sparkle: false }));
+    } else if (id === "waterpet") {
+      setAnim(s => ({ ...s, bubble: "Glug glug!", sparkle: true }));
+      await sleepMs(slow ? 1200 : fast ? 450 : 800);
+      setAnim(s => ({ ...s, bubble: "", sparkle: false }));
+    } else if (id === "cleanpet") {
+      setAnim(s => ({ ...s, bubble: "So clean!", shine: true }));
+      await sleepMs(slow ? 1200 : fast ? 450 : 800);
+      setAnim(s => ({ ...s, bubble: "", shine: false }));
+    } else if (id === "restpet") {
+      setAnim(s => ({ ...s, zzz: true, think: "Nap time", bubble: "" }));
+      await sleepMs(slow ? 1600 : fast ? 550 : 1000);
+      setAnim(s => ({ ...s, zzz: false, think: "" }));
     } else if (id === "wallpaint") {
       setAnim(s => ({ ...s, wallColor: val || color1 }));
     } else if (id === "floorpaint") {
@@ -447,7 +487,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
         if (stopRef.current) return;
         const block = blocks[i];
         const val = values[block.uid];
-        if (block.id === "start" || block.id === "forever") continue;
+        if (block.id === "start" || block.id === "forever" || block.id === "pettap") continue;
         if (block.id === "speed") { speedMs = val === "slow" ? 450 : val === "fast" ? 120 : 250; continue; }
         if (block.id === "wait") { await sleepMs((parseFloat(val) || 1) * speedMs * 2); continue; }
         if (block.id === "repeat") {
@@ -506,9 +546,9 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
         ))}
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: isYoungerMode ? "10px 12px" : "8px 12px", borderBottom: `1px solid ${color2}`, background: STUDIO_COLORS.accentSoft }}>
-        <p style={{ margin: 0, color: STUDIO_COLORS.text, fontWeight: 700, fontSize: isYoungerMode ? 14 : 12 }}>Pet Studio Mode:</p>
+        <p style={{ margin: 0, color: STUDIO_COLORS.text, fontWeight: 700, fontSize: isYoungerMode ? 14 : 12 }}>Block Library:</p>
         <div style={{ display: "flex", gap: 6, background: STUDIO_COLORS.accentSoft, borderRadius: 999, padding: 3 }}>
-          {[ ["older", "Older Kids"], ["younger", "Younger Kids (5-7)"] ].map(([mode, label]) => (
+          {[ ["older", "Studio Blocks (3-5)"], ["younger", "Junior Blocks (K-2)"] ].map(([mode, label]) => (
             <button key={mode} onClick={() => setKidMode(mode)}
               style={{ border: "none", cursor: "pointer", borderRadius: 999, fontWeight: 700, fontSize: isYoungerMode ? 13 : 11, padding: isYoungerMode ? "8px 12px" : "5px 10px", background: kidMode === mode ? STUDIO_COLORS.accent : "transparent", color: kidMode === mode ? STUDIO_COLORS.accentSoft : STUDIO_COLORS.text }}>
               {label}
@@ -518,8 +558,8 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
       </div>
       <p style={{ margin: 0, padding: isYoungerMode ? "8px 12px" : "6px 12px", background: STUDIO_COLORS.accentSoft, color: STUDIO_COLORS.textMuted, fontSize: isYoungerMode ? 13 : 11, fontWeight: 600, borderBottom: `1px solid ${color2}` }}>
         {isYoungerMode
-          ? "Younger mode: fewer blocks, bigger controls, and playful visuals."
-          : "Older mode: full block set with deeper scripting options."}
+          ? "Junior Blocks: simple actions for movement, feelings, sounds, and pet care."
+          : "Studio Blocks: full block set with advanced effects, home design, and control logic."}
       </p>
 
       {studioTab === "studio" && (
