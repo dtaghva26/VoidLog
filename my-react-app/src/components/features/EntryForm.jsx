@@ -102,7 +102,7 @@ export function EntryForm({ initial, onSave, onCancel }) {
         </div>
       ) : (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button onClick={save} style={{ padding: "10px 24px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: "#FFFFFF" }}>{initial ? "Save Changes ✅" : "Log Quest! ⚔️"}</button>
+          <button onClick={save} style={{ padding: "10px 24px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>{initial ? "Save Changes ✅" : "Log Quest! ⚔️"}</button>
           {!initial && title && reflections.some(Boolean) && (
             <button onClick={() => setShowCoach(true)} style={{ padding: "10px 18px", borderRadius: 12, cursor: "pointer", fontWeight: 700, fontSize: 14, border: `2px solid ${c.accent}`, background: c.surfaceRaised, color: c.textPrimary }}>Ask Coach 🤖</button>
           )}

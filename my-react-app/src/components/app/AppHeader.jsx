@@ -23,7 +23,7 @@ export default function AppHeader({ showPet, onTogglePet, onToggleBadges, onTogg
         <button onClick={onToggleBadges} style={controlStyle}>🏅</button>
         <button onClick={onToggleWeekly} style={controlStyle}>✨</button>
         <button onClick={onExport} style={controlStyle}>⬇</button>
-        <button onClick={onNew} style={{ padding: "7px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 800, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: "#FFFFFF" }}>+ Quest</button>
+        <button onClick={onNew} style={{ padding: "7px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 800, fontSize: 14, border: `2px solid ${c.accent}`, background: c.accent, color: c.onAccent }}>+ Quest</button>
       </div>
     </div>
   );
