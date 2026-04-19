@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import PetStudio from "./PetStudio.jsx";
-import { EntryCard, WeeklyReflection, XPBar } from "./DevLogFeatures.jsx";
+import { CalendarHeatmap, EntryCard, WeeklyReflection, XPBar } from "./DevLogFeatures.jsx";
 import AppHeader from "./components/app/AppHeader.jsx";
 import BadgesPanel from "./components/app/BadgesPanel.jsx";
 import EmptyState from "./components/app/EmptyState.jsx";
@@ -91,6 +91,7 @@ export default function App() {
       />
 
       {entries.length > 0 && <XPBar entries={entries} />}
+      {entries.length > 0 && <CalendarHeatmap entries={entries} />}
       {showPet && <PetStudio pet={pet} setPet={setPet} spentXP={spentXP} setSpentXP={setSpentXP} totalXP={totalXP} />}
       {showBadges && <BadgesPanel entries={entries} />}
       {showWeekly && <WeeklyReflection entries={entries} onClose={() => setShowWeekly(false)} />}
