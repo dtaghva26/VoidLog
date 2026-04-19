@@ -1,3 +1,5 @@
+import { color1, color2, color3, color4, WEBSITE_COLORS } from "./colors.js";
+
 export const PROMPTS = {
   coding: [
     "What cool thing did you make or work on today? 🛠️",
@@ -16,7 +18,7 @@ export const PROMPTS = {
 };
 export const VIBES = ["😵","😬","😐","😄","🤩"];
 export const VIBE_LABELS = ["Rough","Meh","Okay","Awesome","EPIC!"];
-export const VIBE_COLORS = ["#D552A3","#D552A3","#D552A3","#462C7D","#FF70BF"];
+export const VIBE_COLORS = [WEBSITE_COLORS.danger, color3, color4, color1, color2];
 export const SUGGESTED_TAGS = {
   coding: ["#python","#scratch","#javascript","#bug","#fixed-it","#proud","#html","#game"],
   gaming: ["#minecraft","#roblox","#fortnite","#win","#loss","#co-op","#speedrun","#story"]
@@ -45,41 +47,41 @@ export function getStage(g) { let s=STAGES[0]; for(const x of STAGES){if(g>=x.mi
 
 // ── BLOCK DEFINITIONS ──────────────────────────────────────────────
 export const BLOCK_DEFS = [
-  { id:"start",    cat:"event",   color:"#D552A3", label:"▶ When Start",      icon:"▶", youngerLabel:"Start", youngerIcons:"▶✨", hasInput:false },
-  { id:"forever",  cat:"event",   color:"#D552A3", label:"🔁 Forever",        icon:"🔁", youngerLabel:"Loop", youngerIcons:"🔁♾️", hasInput:false },
-  { id:"say",      cat:"looks",   color:"#462C7D", label:"💬 Say",            icon:"💬", youngerLabel:"Talk", youngerIcons:"💬🫧", hasInput:"text", placeholder:"Hello!" },
-  { id:"think",    cat:"looks",   color:"#D552A3", label:"💭 Think",          icon:"💭", youngerLabel:"Think", youngerIcons:"💭🤔", hasInput:"text", placeholder:"Hmm..." },
-  { id:"colour",   cat:"looks",   color:"#D552A3", label:"🎨 Change Colour",  icon:"🎨", youngerLabel:"Color", youngerIcons:"🎨🌈", hasInput:"colour" },
-  { id:"rainbow",  cat:"looks",   color:"#D552A3", label:"🌈 Rainbow Mode",   icon:"🌈", youngerLabel:"Rainbow", youngerIcons:"🌈✨", hasInput:false },
-  { id:"ghost",    cat:"looks",   color:"#831C91", label:"👻 Ghost",          icon:"👻", hasInput:false },
-  { id:"shine",    cat:"looks",   color:"#FF70BF", label:"🌟 Shine",          icon:"🌟", hasInput:false },
-  { id:"size",     cat:"looks",   color:"#462C7D", label:"📏 Set Size",       icon:"📏", youngerLabel:"Size", youngerIcons:"📏🐾", hasInput:"select", options:["tiny","normal","big","huge"] },
-  { id:"pulse",    cat:"looks",   color:"#462C7D", label:"💥 Pulse",          icon:"💥", hasInput:false },
-  { id:"walk",     cat:"motion",  color:"#462C7D", label:"🚶 Walk",           icon:"🚶", hasInput:false },
-  { id:"dance",    cat:"motion",  color:"#462C7D", label:"💃 Dance",          icon:"💃", youngerLabel:"Dance", youngerIcons:"💃🎶", hasInput:false },
-  { id:"spin",     cat:"motion",  color:"#462C7D", label:"🌀 Spin",           icon:"🌀", youngerLabel:"Spin", youngerIcons:"🌀⭐", hasInput:false },
-  { id:"jump",     cat:"motion",  color:"#462C7D", label:"⬆ Jump",           icon:"⬆", youngerLabel:"Jump", youngerIcons:"⬆🐸", hasInput:false },
-  { id:"moveleft", cat:"motion",  color:"#462C7D", label:"⬅ Move Left",      icon:"⬅", hasInput:false },
-  { id:"moveright",cat:"motion",  color:"#462C7D", label:"➡ Move Right",     icon:"➡", hasInput:false },
-  { id:"centre",   cat:"motion",  color:"#462C7D", label:"🎯 Go to Centre",   icon:"🎯", youngerLabel:"Center", youngerIcons:"🎯🏠", hasInput:false },
-  { id:"dash",     cat:"motion",  color:"#462C7D", label:"⚡ Dash",            icon:"⚡", hasInput:false },
-  { id:"hop",      cat:"motion",  color:"#462C7D", label:"🐇 Hop",             icon:"🐇", hasInput:false },
-  { id:"moonwalk", cat:"motion",  color:"#462C7D", label:"🌙 Moonwalk",       icon:"🌙", hasInput:false },
-  { id:"zigzag",   cat:"motion",  color:"#462C7D", label:"↔ Zigzag",          icon:"↔", hasInput:false },
-  { id:"backflip", cat:"motion",  color:"#462C7D", label:"🤸 Backflip",        icon:"🤸", hasInput:false },
-  { id:"slide",    cat:"motion",  color:"#462C7D", label:"🛼 Slide",           icon:"🛼", hasInput:false },
-  { id:"float",    cat:"motion",  color:"#462C7D", label:"🎈 Float",           icon:"🎈", hasInput:false },
-  { id:"celebrate",cat:"effects", color:"#D552A3", label:"🎉 Celebrate",      icon:"🎉", hasInput:false },
-  { id:"sleep",    cat:"effects", color:"#831C91", label:"😴 Sleep",          icon:"😴", youngerLabel:"Sleep", youngerIcons:"😴💤", hasInput:false },
-  { id:"sparkle",  cat:"effects", color:"#D552A3", label:"✨ Sparkle",        icon:"✨", youngerLabel:"Sparkle", youngerIcons:"✨🌟", hasInput:false },
-  { id:"sound",    cat:"effects", color:"#831C91", label:"🎵 Play Sound",     icon:"🎵", youngerLabel:"Sound", youngerIcons:"🎵🔊", hasInput:"select", options:["pop","boing","cheer","woosh"] },
-  { id:"wallpaint",cat:"home",    color:"#462C7D", label:"🖌 Paint Walls",    icon:"🖌", hasInput:"colour" },
-  { id:"floorpaint",cat:"home",   color:"#462C7D", label:"🪵 Paint Floor",    icon:"🪵", hasInput:"colour" },
-  { id:"wallpaper",cat:"home",    color:"#462C7D", label:"🧱 Wallpaper",      icon:"🧱", youngerLabel:"Wall", youngerIcons:"🧱⭐", hasInput:"select", options:["none","stars","hearts","dots"] },
-  { id:"settoy",   cat:"home",    color:"#462C7D", label:"🧸 Place Toy",      icon:"🧸", youngerLabel:"Toy", youngerIcons:"🧸⚽", hasInput:"select", options:["none","ball","book","plant"] },
-  { id:"speed",    cat:"control", color:"#D552A3", label:"⚡ Set Speed",      icon:"⚡", hasInput:"select", options:["slow","normal","fast"] },
-  { id:"repeat",   cat:"control", color:"#D552A3", label:"🔄 Repeat",         icon:"🔄", hasInput:"number", placeholder:"3" },
-  { id:"wait",     cat:"control", color:"#D552A3", label:"⏱ Wait",           icon:"⏱", hasInput:"number", placeholder:"1" },
+  { id:"start",    cat:"event",   color:color2, label:"▶ When Start",      icon:"▶", youngerLabel:"Start", youngerIcons:"▶✨", hasInput:false },
+  { id:"forever",  cat:"event",   color:color2, label:"🔁 Forever",        icon:"🔁", youngerLabel:"Loop", youngerIcons:"🔁♾️", hasInput:false },
+  { id:"say",      cat:"looks",   color:color1, label:"💬 Say",            icon:"💬", youngerLabel:"Talk", youngerIcons:"💬🫧", hasInput:"text", placeholder:"Hello!" },
+  { id:"think",    cat:"looks",   color:color2, label:"💭 Think",          icon:"💭", youngerLabel:"Think", youngerIcons:"💭🤔", hasInput:"text", placeholder:"Hmm..." },
+  { id:"colour",   cat:"looks",   color:color3, label:"🎨 Change Colour",  icon:"🎨", youngerLabel:"Color", youngerIcons:"🎨🌈", hasInput:"colour" },
+  { id:"rainbow",  cat:"looks",   color:color4, label:"🌈 Rainbow Mode",   icon:"🌈", youngerLabel:"Rainbow", youngerIcons:"🌈✨", hasInput:false },
+  { id:"ghost",    cat:"looks",   color:color1, label:"👻 Ghost",          icon:"👻", hasInput:false },
+  { id:"shine",    cat:"looks",   color:color3, label:"🌟 Shine",          icon:"🌟", hasInput:false },
+  { id:"size",     cat:"looks",   color:color1, label:"📏 Set Size",       icon:"📏", youngerLabel:"Size", youngerIcons:"📏🐾", hasInput:"select", options:["tiny","normal","big","huge"] },
+  { id:"pulse",    cat:"looks",   color:color1, label:"💥 Pulse",          icon:"💥", hasInput:false },
+  { id:"walk",     cat:"motion",  color:color1, label:"🚶 Walk",           icon:"🚶", hasInput:false },
+  { id:"dance",    cat:"motion",  color:color1, label:"💃 Dance",          icon:"💃", youngerLabel:"Dance", youngerIcons:"💃🎶", hasInput:false },
+  { id:"spin",     cat:"motion",  color:color1, label:"🌀 Spin",           icon:"🌀", youngerLabel:"Spin", youngerIcons:"🌀⭐", hasInput:false },
+  { id:"jump",     cat:"motion",  color:color1, label:"⬆ Jump",           icon:"⬆", youngerLabel:"Jump", youngerIcons:"⬆🐸", hasInput:false },
+  { id:"moveleft", cat:"motion",  color:color1, label:"⬅ Move Left",      icon:"⬅", hasInput:false },
+  { id:"moveright",cat:"motion",  color:color1, label:"➡ Move Right",     icon:"➡", hasInput:false },
+  { id:"centre",   cat:"motion",  color:color1, label:"🎯 Go to Centre",   icon:"🎯", youngerLabel:"Center", youngerIcons:"🎯🏠", hasInput:false },
+  { id:"dash",     cat:"motion",  color:color1, label:"⚡ Dash",            icon:"⚡", hasInput:false },
+  { id:"hop",      cat:"motion",  color:color1, label:"🐇 Hop",             icon:"🐇", hasInput:false },
+  { id:"moonwalk", cat:"motion",  color:color1, label:"🌙 Moonwalk",       icon:"🌙", hasInput:false },
+  { id:"zigzag",   cat:"motion",  color:color1, label:"↔ Zigzag",          icon:"↔", hasInput:false },
+  { id:"backflip", cat:"motion",  color:color1, label:"🤸 Backflip",        icon:"🤸", hasInput:false },
+  { id:"slide",    cat:"motion",  color:color1, label:"🛼 Slide",           icon:"🛼", hasInput:false },
+  { id:"float",    cat:"motion",  color:color1, label:"🎈 Float",           icon:"🎈", hasInput:false },
+  { id:"celebrate",cat:"effects", color:color2, label:"🎉 Celebrate",      icon:"🎉", hasInput:false },
+  { id:"sleep",    cat:"effects", color:color1, label:"😴 Sleep",          icon:"😴", youngerLabel:"Sleep", youngerIcons:"😴💤", hasInput:false },
+  { id:"sparkle",  cat:"effects", color:color3, label:"✨ Sparkle",        icon:"✨", youngerLabel:"Sparkle", youngerIcons:"✨🌟", hasInput:false },
+  { id:"sound",    cat:"effects", color:color1, label:"🎵 Play Sound",     icon:"🎵", youngerLabel:"Sound", youngerIcons:"🎵🔊", hasInput:"select", options:["pop","boing","cheer","woosh"] },
+  { id:"wallpaint",cat:"home",    color:color1, label:"🖌 Paint Walls",    icon:"🖌", hasInput:"colour" },
+  { id:"floorpaint",cat:"home",   color:color1, label:"🪵 Paint Floor",    icon:"🪵", hasInput:"colour" },
+  { id:"wallpaper",cat:"home",    color:color1, label:"🧱 Wallpaper",      icon:"🧱", youngerLabel:"Wall", youngerIcons:"🧱⭐", hasInput:"select", options:["none","stars","hearts","dots"] },
+  { id:"settoy",   cat:"home",    color:color1, label:"🧸 Place Toy",      icon:"🧸", youngerLabel:"Toy", youngerIcons:"🧸⚽", hasInput:"select", options:["none","ball","book","plant"] },
+  { id:"speed",    cat:"control", color:color2, label:"⚡ Set Speed",      icon:"⚡", hasInput:"select", options:["slow","normal","fast"] },
+  { id:"repeat",   cat:"control", color:color2, label:"🔄 Repeat",         icon:"🔄", hasInput:"number", placeholder:"3" },
+  { id:"wait",     cat:"control", color:color2, label:"⏱ Wait",           icon:"⏱", hasInput:"number", placeholder:"1" },
 ];
 export const YOUNGER_BLOCK_IDS = [
   "start",
@@ -100,4 +102,4 @@ export const YOUNGER_BLOCK_IDS = [
   "centre",
 ];
 export const CAT_LABELS = { event:"Events", looks:"Looks", motion:"Motion", effects:"Effects", home:"Home", control:"Control" };
-export const CAT_COLORS = { event:"#D552A3", looks:"#D552A3", motion:"#462C7D", effects:"#D552A3", home:"#462C7D", control:"#D552A3" };
+export const CAT_COLORS = { event:color2, looks:color3, motion:color1, effects:WEBSITE_COLORS.danger, home:color1, control:color2 };
