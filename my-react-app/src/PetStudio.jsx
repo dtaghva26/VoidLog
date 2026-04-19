@@ -10,6 +10,7 @@ import {
   CAT_COLORS,
 } from "./constants.js";
 import { color1, color2, color3, WEBSITE_COLORS } from "./colors.js";
+import PetStudioActionButton from "./components/features/PetStudioActionButton.jsx";
 
 const STUDIO_COLORS = {
   panel: WEBSITE_COLORS.surface,
@@ -517,11 +518,45 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
               <span style={{ fontSize: isYoungerMode ? 14 : 11, color: STUDIO_COLORS.accent, fontWeight: 700 }}>Script</span>
               <div style={{ display: "flex", gap: 4 }}>
                 {!running ? (
-                  <button onClick={runSequence} disabled={sequence.length === 0} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: sequence.length === 0 ? STUDIO_COLORS.darkSurface : STUDIO_COLORS.darkSurface, color: STUDIO_COLORS.accentSoft }}>▶ Run</button>
+                  <PetStudioActionButton
+                    icon="▶"
+                    label="Run"
+                    onClick={runSequence}
+                    disabled={sequence.length === 0}
+                    isYoungerMode={isYoungerMode}
+                    style={{
+                      padding: isYoungerMode ? "7px 12px" : "4px 10px",
+                      background: STUDIO_COLORS.darkSurface,
+                      color: STUDIO_COLORS.accentSoft,
+                      fontSize: isYoungerMode ? 14 : 11,
+                    }}
+                  />
                 ) : (
-                  <button onClick={stopScript} style={{ padding: isYoungerMode ? "7px 12px" : "4px 10px", borderRadius: 7, border: "none", cursor: "pointer", fontWeight: 800, fontSize: isYoungerMode ? 14 : 11, background: STUDIO_COLORS.accent, color: STUDIO_COLORS.accentSoft }}>■ Stop</button>
+                  <PetStudioActionButton
+                    icon="■"
+                    label="Stop"
+                    onClick={stopScript}
+                    isYoungerMode={isYoungerMode}
+                    style={{
+                      padding: isYoungerMode ? "7px 12px" : "4px 10px",
+                      background: STUDIO_COLORS.accent,
+                      color: STUDIO_COLORS.accentSoft,
+                      fontSize: isYoungerMode ? 14 : 11,
+                    }}
+                  />
                 )}
-                <button onClick={clearSeq} style={{ padding: isYoungerMode ? "7px 11px" : "4px 8px", borderRadius: 7, border: "none", cursor: "pointer", fontSize: isYoungerMode ? 14 : 11, background: STUDIO_COLORS.darkSurface, color: STUDIO_COLORS.accent }}>🗑</button>
+                <PetStudioActionButton
+                  icon="🗑"
+                  label="Clear"
+                  onClick={clearSeq}
+                  isYoungerMode={isYoungerMode}
+                  style={{
+                    padding: isYoungerMode ? "7px 11px" : "4px 8px",
+                    background: STUDIO_COLORS.darkSurface,
+                    color: STUDIO_COLORS.accent,
+                    fontSize: isYoungerMode ? 14 : 11,
+                  }}
+                />
               </div>
             </div>
             {sequence.length === 0 ? (
