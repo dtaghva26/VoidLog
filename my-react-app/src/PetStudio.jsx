@@ -261,7 +261,6 @@ function LiveStage({ pet, anim, running }) {
 
 export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP }) {
   const [studioTab, setStudioTab] = useState("studio");
-  const [kidMode, setKidMode] = useState("older");
   const [sequence, setSequence] = useState([]);
   const [values, setValues] = useState({});
   const [running, setRunning] = useState(false);
@@ -284,6 +283,7 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
       frog: ["Moss", "River", "Orbit", "Rune"],
     },
   };
+  const kidMode = pet.kidMode === "younger" ? "younger" : "older";
   const availXP = totalXP - spentXP;
   const stageObj = getStage(pet.growth);
   const nextStage = STAGES.find(s => s.minGrowth > pet.growth);
@@ -303,6 +303,24 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
   const removeFromSeq = uid => setSequence(s => s.filter(x => x.uid !== uid));
   const clearSeq = () => { setSequence([]); setValues({}); };
   const stopScript = () => { stopRef.current = true; setRunning(false); setActiveIdx(-1); };
+  const setKidMode = (mode) => {
+    const nextMode = mode === "younger" ? "younger" : "older";
+    if (nextMode === kidMode) return;
+    setPet({ ...pet, kidMode: nextMode });
+    if (nextMode === "younger") {
+      stopScript();
+      setSequence((current) => {
+        const filteredSequence = current.filter((block) => YOUNGER_BLOCK_IDS.includes(block.id));
+        const keepUids = new Set(filteredSequence.map((block) => String(block.uid)));
+        setValues((currentValues) =>
+          Object.fromEntries(
+            Object.entries(currentValues).filter(([uid]) => keepUids.has(String(uid)))
+          )
+        );
+        return filteredSequence;
+      });
+    }
+  };
 
   const sleepMs = ms => new Promise(r => setTimeout(r, ms));
 
@@ -498,6 +516,11 @@ export default function PetStudio({ pet, setPet, spentXP, setSpentXP, totalXP })
           ))}
         </div>
       </div>
+      <p style={{ margin: 0, padding: isYoungerMode ? "8px 12px" : "6px 12px", background: STUDIO_COLORS.accentSoft, color: STUDIO_COLORS.textMuted, fontSize: isYoungerMode ? 13 : 11, fontWeight: 600, borderBottom: `1px solid ${color2}` }}>
+        {isYoungerMode
+          ? "Younger mode: fewer blocks, bigger controls, and playful visuals."
+          : "Older mode: full block set with deeper scripting options."}
+      </p>
 
       {studioTab === "studio" && (
         <div style={{ display: "flex", minHeight: 420 }}>
