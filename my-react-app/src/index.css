@@ -1,13 +1,13 @@
 :root {
-  --text: #462C7D;
-  --text-h: #462C7D;
-  --bg: #FF70BF;
-  --border: #FF70BF;
-  --code-bg: #FF70BF;
-  --accent: #D552A3;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --text: #2B235A;
+  --text-h: #3D2C8D;
+  --bg: #FFF7FF;
+  --border: #D9CCFF;
+  --code-bg: #F1E9FF;
+  --accent: #7E57FF;
+  --accent-bg: rgba(126, 87, 255, 0.16);
+  --accent-border: rgba(126, 87, 255, 0.46);
+  --social-bg: rgba(232, 223, 255, 0.75);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -32,15 +32,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #D552A3;
-    --text-h: #FF70BF;
-    --bg: #462C7D;
-    --border: #462C7D;
-    --code-bg: #462C7D;
-    --accent: #FF70BF;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
+    --text: #F3EEFF;
+    --text-h: #FFF6FF;
+    --bg: #2A215A;
+    --border: #4D3D8A;
+    --code-bg: #3C2F7A;
+    --accent: #BCA3FF;
+    --accent-bg: rgba(188, 163, 255, 0.2);
+    --accent-border: rgba(188, 163, 255, 0.55);
+    --social-bg: rgba(97, 80, 170, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
